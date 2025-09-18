@@ -17,6 +17,9 @@ RUN apt-get update && apt-get install -y \
 # Cài Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Cho phép composer chạy với root
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
 WORKDIR /var/www/html
 
 # Copy composer trước để cache dependency
@@ -26,11 +29,8 @@ RUN composer install --no-dev --optimize-autoloader
 # Copy toàn bộ source code
 COPY . .
 
-# Build Laravel cache
-RUN php artisan config:cache && php artisan route:cache && php artisan view:cache
-
 # Expose port Render yêu cầu
 EXPOSE 10000
 
-# Start Laravel
+# Start Laravel (package:discover sẽ tự chạy khi install)
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=10000"]
