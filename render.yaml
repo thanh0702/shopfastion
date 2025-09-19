@@ -11,6 +11,16 @@ services:
       - key: APP_DEBUG
         value: false
       - key: APP_KEY
-        value: base64:xxxxxxx
+        value: base64:xxxxxxx   # Thay bằng APP_KEY thực
       - key: MONGODB_DSN
-        value: mongodb+srv://user:password@cluster0.mongodb.net/shopfastion?retryWrites=true&w=majority
+        value: mongodb+srv://thanhkt2k4_db_user:pPk6MNunx5S0MCLO@cluster0.vedgvun.mongodb.net/shopfastion?retryWrites=true&w=majority
+      - key: MONGODB_DATABASE
+        value: shopfastion
+      - key: MONGODB_USERNAME
+        value: thanhkt2k4_db_user
+      - key: MONGODB_PASSWORD
+        value: pPk6MNunx5S0MCLO
+      - key: MONGODB_AUTHENTICATION_DATABASE
+        value: admin
+      - key: SESSION_DRIVER
+        value: file
