@@ -1,9 +1,23 @@
-vendor
+# Node modules, vendor, caches
 node_modules
+vendor
+npm-debug.log
+yarn-error.log
 .env
-.env.*
-public/storage
-storage/*.key
+.env.*.local
+
+# IDE / OS files
+.idea
+.vscode
 .DS_Store
-.git
-.gitignore
+Thumbs.db
+
+# Laravel / storage / cache
+storage/logs/*
+storage/framework/cache/data/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/debugbar/*
+
+# Composer caches
+composer.lock
