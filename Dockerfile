@@ -1,6 +1,7 @@
+# PHP CLI 8.2
 FROM php:8.2-cli
 
-# Cài đặt dependencies và PHP extensions
+# Cài dependencies cần thiết
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
@@ -14,7 +15,7 @@ RUN apt-get update && apt-get install -y \
     pkg-config \
     libssl-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo pdo_mysql gd mbstring bcmath exif pcntl
+    && docker-php-ext-install gd mbstring bcmath exif pcntl
 
 # Cài MongoDB extension
 RUN pecl install mongodb \
@@ -25,18 +26,20 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
-# Copy composer trước để cache dependency
+# Copy composer trước để cache
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --optimize-autoloader --no-scripts
 
-# Copy toàn bộ code
+# Copy toàn bộ source code
 COPY . .
 
-# Build cache cho Laravel
-RUN php artisan config:cache && php artisan route:cache && php artisan view:cache || true
+# Build cache Laravel
+RUN php artisan config:cache || true
+RUN php artisan route:cache || true
+RUN php artisan view:cache || true
 
-# Expose port Render yêu cầu
+# Expose port
 EXPOSE 10000
 
-# Start Laravel
+# Start Laravel server
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=10000"]
