@@ -1,35 +1,41 @@
-# Use official PHP image with Apache
+# --------------------------
+# Dockerfile PHP 8.2 + Apache + MongoDB + Composer
+# --------------------------
+
+# 1. Chọn image PHP 8.2 với Apache
 FROM php:8.2-apache
 
-# Install system dependencies and PHP extensions
-RUN apt-get update && apt-get install -y \
-    libssl-dev \
-    libcurl4-openssl-dev \
-    zip unzip git \
-    build-essential \
-    php-dev \
-    pkg-config \
+# 2. Cài đặt các dependency cần thiết để build MongoDB extension
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        libssl-dev \
+        libcurl4-openssl-dev \
+        zip unzip git \
+        build-essential \
+        php8.2-dev \
+        pkg-config \
+        ca-certificates \
     && pecl install mongodb \
     && docker-php-ext-enable mongodb \
-    && a2enmod rewrite
+    && a2enmod rewrite \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install Composer
+# 3. Cài Composer từ image chính thức
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Set working directory
+# 4. Thiết lập thư mục làm việc
 WORKDIR /var/www/html
 
-# Copy existing application directory contents
+# 5. Copy toàn bộ source code vào container
 COPY . /var/www/html
 
-# Install PHP dependencies
+# 6. Cài đặt các dependency PHP của Laravel
 RUN composer install --no-dev --optimize-autoloader --no-scripts --ignore-platform-reqs
 
-# Set permissions for Laravel storage and bootstrap cache
+# 7. Cấp quyền cho Laravel storage và cache
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Expose port 80
+# 8. Mở cổng 80
 EXPOSE 80
 
-# Start Apache in foreground
+# 9. Chạy Apache ở foreground
 CMD ["apache2-foreground"]
