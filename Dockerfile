@@ -6,10 +6,12 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     libcurl4-openssl-dev \
     zip unzip git \
-    && docker-php-ext-install pdo pdo_mysql
-
-# Enable Apache mod_rewrite
-RUN a2enmod rewrite
+    build-essential \
+    && pecl install mongodb \
+    && docker-php-ext-configure mongodb --with-mongodb-ssl=shared \
+    && docker-php-ext-install mongodb \
+    && docker-php-ext-enable mongodb \
+    && a2enmod rewrite
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -20,8 +22,8 @@ WORKDIR /var/www/html
 # Copy existing application directory contents
 COPY . /var/www/html
 
-# Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader
+# Install PHP dependencies (after ensuring MongoDB extension is ready)
+RUN composer install --no-dev --optimize-autoloader --no-scripts --ignore-platform-reqs
 
 # Set permissions for Laravel storage and bootstrap cache
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
