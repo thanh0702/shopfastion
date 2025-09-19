@@ -26,7 +26,10 @@ WORKDIR /var/www/html
 # 5. Copy toàn bộ source code vào container
 COPY . /var/www/html
 
-# 5.1. Recreate the public/storage symlink
+# 5.1. Thay đổi DocumentRoot của Apache thành /var/www/html/public
+RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
+
+# 5.2. Recreate the public/storage symlink
 RUN rm -rf public/storage && ln -s ../storage/app/public public/storage
 
 # 6. Cài đặt các dependency PHP của Laravel
