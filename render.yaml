@@ -3,46 +3,40 @@ services:
     name: shopfastion
     env: docker
     plan: free
-    dockerfilePath: ./Dockerfile
-    dockerContext: .
-    autoDeploy: true
+    region: oregon
+    branch: main
+    dockerfilePath: Dockerfile
+    buildCommand: docker build -t shopfastion .
+    startCommand: php artisan serve --host=0.0.0.0 --port=10000
     envVars:
       - key: APP_ENV
         value: production
-      - key: APP_KEY
-        sync: false
       - key: APP_DEBUG
-        value: false
-      - key: APP_URL
-        value: https://shopfastion.onrender.com
+        value: "false"
+      - key: APP_KEY
+        value: base64:iZTbqpP11EyIiIu0CZPeGohMFbdBcXQbBOAyu5uRjeI=
       - key: DB_CONNECTION
         value: mysql
       - key: DB_HOST
-        fromDatabase:
-          name: shopfastion-db
-          property: host
+        value: <MYSQL_HOST>         # MySQL nếu dùng
       - key: DB_PORT
-        fromDatabase:
-          name: shopfastion-db
-          property: port
+        value: "3306"
       - key: DB_DATABASE
-        fromDatabase:
-          name: shopfastion-db
-          property: database
+        value: shopfastion
       - key: DB_USERNAME
-        fromDatabase:
-          name: shopfastion-db
-          property: user
+        value: <MYSQL_USER>
       - key: DB_PASSWORD
-        fromDatabase:
-          name: shopfastion-db
-          property: password
-    buildCommand: ""
-    startCommand: "php artisan serve --host=0.0.0.0 --port=10000"
-    postDeployCommand: "php artisan migrate --force"
-
-databases:
-  - name: shopfastion-db
-    databaseName: shopfastion
-    user: shopfastion_user
+        value: <MYSQL_PASSWORD>
+      - key: MONGODB_DSN
+        value: mongodb+srv://thanhkt2k4_db_user:pPk6MNunx5S0MCLO@cluster0.vedgvun.mongodb.net/shopfastion?retryWrites=true&w=majority&appName=Cluster0
+      - key: MONGODB_DATABASE
+        value: shopfastion
+      - key: MONGODB_USERNAME
+        value: thanhkt2k4_db_user
+      - key: MONGODB_PASSWORD
+        value: pPk6MNunx5S0MCLO
+      - key: MONGODB_AUTHENTICATION_DATABASE
+        value: admin
+      - key: APP_URL
+        value: https://shopfastion.onrender.com
     plan: free
