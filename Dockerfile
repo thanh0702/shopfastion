@@ -24,7 +24,7 @@ WORKDIR /var/www/html
 
 # Copy composer trước để cache dependency
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --optimize-autoloader --no-scripts --ignore-platform-req=ext-mongodb
+RUN composer install --no-dev --optimize-autoloader --ignore-platform-req=ext-mongodb
 
 # Copy toàn bộ source code
 COPY . .
