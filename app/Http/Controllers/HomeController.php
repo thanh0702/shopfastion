@@ -381,7 +381,17 @@ class HomeController extends Controller
         $cartItem->quantity = $request->quantity;
         $cartItem->save();
 
-        return response()->json(['success' => true]);
+        // Calculate updated totals
+        $itemTotal = $cartItem->product->price * $cartItem->quantity;
+        $cartTotal = $cart->items->sum(function($item) {
+            return $item->product->price * $item->quantity;
+        });
+
+        return response()->json([
+            'success' => true,
+            'item_total' => $itemTotal,
+            'cart_total' => $cartTotal
+        ]);
     }
 
     public function deleteCartItem(Request $request)
