@@ -7,8 +7,9 @@ RUN apt-get update && apt-get install -y \
     libcurl4-openssl-dev \
     zip unzip git \
     build-essential \
+    php-dev \
+    pkg-config \
     && pecl install mongodb \
-    && docker-php-ext-install mongodb \
     && docker-php-ext-enable mongodb \
     && a2enmod rewrite
 
@@ -21,7 +22,7 @@ WORKDIR /var/www/html
 # Copy existing application directory contents
 COPY . /var/www/html
 
-# Install PHP dependencies (after ensuring MongoDB extension is ready)
+# Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader --no-scripts --ignore-platform-reqs
 
 # Set permissions for Laravel storage and bootstrap cache
