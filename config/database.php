@@ -116,8 +116,9 @@ return [
         'mongodb' => [
             'driver' => 'mongodb',
             'dsn' => env('DB_URI', ''),
-            'database' => env('DB_DATABASE', ''),
+            
             'options' => [
+                'ssl' => true,
                 'database' => env('MONGODB_AUTHENTICATION_DATABASE', 'admin'), // required with Mongo 3+
             ],
         ],
