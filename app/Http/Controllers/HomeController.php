@@ -340,7 +340,7 @@ class HomeController extends Controller
                 'user_id' => $user->id,
                 'product_id' => $request->product_id,
                 'product_name' => $product->name,
-                'product_price' => $product->price,
+                'product_price' => $product->current_price,
             ]);
             return response()->json(['success' => true, 'added' => true]);
         }
