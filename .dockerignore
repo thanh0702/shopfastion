@@ -1,0 +1,9 @@
+vendor
+node_modules
+.env
+.env.*
+public/storage
+storage/*.key
+.DS_Store
+.git
+.gitignore

@@ -2,25 +2,8 @@ services:
   - type: web
     name: shopfastion
     env: docker
-    plan: free
+    plan: starter
     dockerfilePath: Dockerfile
     autoDeploy: true
-    envVars:
-      - key: APP_ENV
-        value: production
-      - key: APP_DEBUG
-        value: false
-      - key: APP_KEY
-        value: base64:xxxxxxx   # Thay bằng APP_KEY thực
-      - key: MONGODB_DSN
-        value: mongodb+srv://thanhkt2k4_db_user:pPk6MNunx5S0MCLO@cluster0.vedgvun.mongodb.net/shopfastion?retryWrites=true&w=majority
-      - key: MONGODB_DATABASE
-        value: shopfastion
-      - key: MONGODB_USERNAME
-        value: thanhkt2k4_db_user
-      - key: MONGODB_PASSWORD
-        value: pPk6MNunx5S0MCLO
-      - key: MONGODB_AUTHENTICATION_DATABASE
-        value: admin
-      - key: SESSION_DRIVER
-        value: file
+    port: 10000
+
