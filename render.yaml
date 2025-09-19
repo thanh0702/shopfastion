@@ -3,11 +3,25 @@ services:
     name: shopfastion
     env: php
     buildCommand: |
-      apt-get update && apt-get install -y \
-        pkg-config \
-        libssl-dev \
-        libcurl4-openssl-dev \
-        openssl \
-        && pecl install mongodb \
-        && docker-php-ext-enable mongodb
-    startCommand: "vendor/bin/heroku-php-apache2 public/"
+      composer install --no-dev --optimize-autoloader
+    startCommand: "php artisan serve --host=0.0.0.0 --port=10000"
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: 'false'
+      - key: APP_KEY
+        fromDatabase: true
+      - key: DB_CONNECTION
+        value: mongodb
+      - key: DB_URI
+        fromDatabase: true
+      - key: CACHE_DRIVER
+        value: file
+      - key: SESSION_DRIVER
+        value: file
+      - key: QUEUE_CONNECTION
+        value: sync
+    plan: free
+    region: oregon
+    branch: main
