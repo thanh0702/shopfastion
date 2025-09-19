@@ -7,6 +7,7 @@ services:
         pkg-config \
         libssl-dev \
         libcurl4-openssl-dev \
+        openssl \
         && pecl install mongodb \
         && docker-php-ext-enable mongodb
-    startCommand: "vendor/bin/heroku-php-apache2 public/"  # Thay bằng start command của bạn
+    startCommand: "vendor/bin/heroku-php-apache2 public/"
