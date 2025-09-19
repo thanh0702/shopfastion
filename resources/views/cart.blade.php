@@ -45,9 +45,9 @@
                         <td class="item-price" data-price="{{ $item->product->price }}">{{ number_format($item->product->price, 0, ',', '.') }} VND</td>
                         <td>
                             <div class="input-group" style="width: 120px;">
-                                <button class="btn btn-outline-secondary btn-sm" type="button" onclick="changeQuantity({{ $item->id }}, -1)">-</button>
-                                <input type="number" class="form-control text-center" id="quantity-{{ $item->id }}" value="{{ $item->quantity }}" min="1" onchange="updateQuantity({{ $item->id }}, this.value)">
-                                <button class="btn btn-outline-secondary btn-sm" type="button" onclick="changeQuantity({{ $item->id }}, 1)">+</button>
+                                <button class="btn btn-outline-secondary btn-sm quantity-btn" type="button" data-cart-item-id="{{ $item->id }}" data-delta="-1">-</button>
+                                <input type="number" class="form-control text-center quantity-input" id="quantity-{{ $item->id }}" value="{{ $item->quantity }}" min="1" data-cart-item-id="{{ $item->id }}">
+                                <button class="btn btn-outline-secondary btn-sm quantity-btn" type="button" data-cart-item-id="{{ $item->id }}" data-delta="1">+</button>
                             </div>
                         </td>
                         <td class="item-total" data-item-id="{{ $item->id }}">{{ number_format($item->product->price * $item->quantity, 0, ',', '.') }} VND</td>
@@ -89,6 +89,24 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Event delegation for quantity buttons
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('quantity-btn')) {
+                const cartItemId = e.target.getAttribute('data-cart-item-id');
+                const delta = parseInt(e.target.getAttribute('data-delta'));
+                changeQuantity(cartItemId, delta);
+            }
+        });
+
+        // Event delegation for quantity input changes
+        document.addEventListener('change', function(e) {
+            if (e.target.classList.contains('quantity-input')) {
+                const cartItemId = e.target.getAttribute('data-cart-item-id');
+                const quantity = parseInt(e.target.value);
+                updateQuantity(cartItemId, quantity);
+            }
+        });
+
         function changeQuantity(cartItemId, delta) {
             const input = document.getElementById('quantity-' + cartItemId);
             let newQuantity = parseInt(input.value) + delta;
@@ -98,44 +116,44 @@
         }
 
         function updateQuantity(cartItemId, quantity) {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             fetch('/cart/update', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    'X-CSRF-TOKEN': csrfToken
                 },
                 body: JSON.stringify({
                     cart_item_id: cartItemId,
                     quantity: quantity
                 })
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
-                    updateTotals(cartItemId, quantity);
+                    updateTotals(cartItemId, data.item_total, data.cart_total);
+                } else {
+                    alert('Có lỗi xảy ra khi cập nhật số lượng. Vui lòng thử lại.');
                 }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Có lỗi xảy ra khi cập nhật số lượng. Vui lòng thử lại.');
+            });
         }
 
-        function updateTotals(updatedItemId, newQuantity) {
+        function updateTotals(updatedItemId, newItemTotal, newCartTotal) {
             // Update the specific item total
             const itemTotalCell = document.querySelector(`.item-total[data-item-id="${updatedItemId}"]`);
-            const itemPriceCell = itemTotalCell.closest('tr').querySelector('.item-price');
-            const price = parseFloat(itemPriceCell.getAttribute('data-price'));
-            const newItemTotal = price * newQuantity;
             itemTotalCell.textContent = new Intl.NumberFormat('vi-VN').format(newItemTotal) + ' VND';
 
             // Update overall total
-            let total = 0;
-            document.querySelectorAll('.item-total').forEach(cell => {
-                const itemId = cell.getAttribute('data-item-id');
-                const quantityInput = document.getElementById('quantity-' + itemId);
-                const itemPrice = parseFloat(cell.closest('tr').querySelector('.item-price').getAttribute('data-price'));
-                const quantity = parseInt(quantityInput.value);
-                total += itemPrice * quantity;
-            });
-            document.getElementById('cart-total').textContent = new Intl.NumberFormat('vi-VN').format(total) + ' VND';
+            document.getElementById('cart-total').textContent = new Intl.NumberFormat('vi-VN').format(newCartTotal) + ' VND';
         }
 
         function checkout() {
