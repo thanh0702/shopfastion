@@ -3,40 +3,14 @@ services:
     name: shopfastion
     env: docker
     plan: free
-    region: oregon
-    branch: main
     dockerfilePath: Dockerfile
-    buildCommand: docker build -t shopfastion .
-    startCommand: php artisan serve --host=0.0.0.0 --port=10000
+    autoDeploy: true
     envVars:
       - key: APP_ENV
         value: production
       - key: APP_DEBUG
-        value: "false"
+        value: false
       - key: APP_KEY
-        value: base64:iZTbqpP11EyIiIu0CZPeGohMFbdBcXQbBOAyu5uRjeI=
-      - key: DB_CONNECTION
-        value: mysql
-      - key: DB_HOST
-        value: <MYSQL_HOST>         # MySQL nếu dùng
-      - key: DB_PORT
-        value: "3306"
-      - key: DB_DATABASE
-        value: shopfastion
-      - key: DB_USERNAME
-        value: <MYSQL_USER>
-      - key: DB_PASSWORD
-        value: <MYSQL_PASSWORD>
+        value: base64:xxxxxxx
       - key: MONGODB_DSN
-        value: mongodb+srv://thanhkt2k4_db_user:pPk6MNunx5S0MCLO@cluster0.vedgvun.mongodb.net/shopfastion?retryWrites=true&w=majority&appName=Cluster0
-      - key: MONGODB_DATABASE
-        value: shopfastion
-      - key: MONGODB_USERNAME
-        value: thanhkt2k4_db_user
-      - key: MONGODB_PASSWORD
-        value: pPk6MNunx5S0MCLO
-      - key: MONGODB_AUTHENTICATION_DATABASE
-        value: admin
-      - key: APP_URL
-        value: https://shopfastion.onrender.com
-    plan: free
+        value: mongodb+srv://user:password@cluster0.mongodb.net/shopfastion?retryWrites=true&w=majority
