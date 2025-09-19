@@ -369,10 +369,13 @@ class HomeController extends Controller
         ]);
 
         $user = auth()->user();
+        $cart = Cart::where('user_id', $user->id)->first();
+        if (!$cart) {
+            return response()->json(['success' => false, 'message' => 'Cart not found'], 404);
+        }
+
         $cartItem = CartItem::where('id', $request->cart_item_id)
-                            ->whereHas('cart', function($query) use ($user) {
-                                $query->where('user_id', $user->id);
-                            })
+                            ->where('cart_id', $cart->id)
                             ->firstOrFail();
 
         $cartItem->quantity = $request->quantity;
@@ -388,10 +391,13 @@ class HomeController extends Controller
         ]);
 
         $user = auth()->user();
+        $cart = Cart::where('user_id', $user->id)->first();
+        if (!$cart) {
+            return back()->with('error', 'Cart not found.');
+        }
+
         $cartItem = CartItem::where('id', $request->cart_item_id)
-                            ->whereHas('cart', function($query) use ($user) {
-                                $query->where('user_id', $user->id);
-                            })
+                            ->where('cart_id', $cart->id)
                             ->firstOrFail();
 
         $cartItem->delete();

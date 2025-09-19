@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use MongoDB\Laravel\Eloquent\Model;
 
 class ReceiptQr extends Model
 {
+    protected $connection = 'mongodb';
+
     protected $fillable = [
         'user_id',
         'order_id',
