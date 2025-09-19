@@ -21,17 +21,23 @@ services:
       - key: APP_DEBUG
         value: 'false'
       - key: APP_KEY
-        fromDatabase: true
+        value: base64:1kLxxobOyim1i1yWlGn56Yf19DdsvDnNwac/I1HIygg=
       - key: DB_CONNECTION
         value: mongodb
       - key: DB_URI
-        fromDatabase: true
+        value: mongodb+srv://username:password@cluster0.mongodb.net/your_database?retryWrites=true&w=majority
       - key: CACHE_DRIVER
         value: file
       - key: SESSION_DRIVER
         value: file
       - key: QUEUE_CONNECTION
         value: sync
+      - key: CLOUDINARY_CLOUD_NAME
+        value: your_cloud_name
+      - key: CLOUDINARY_API_KEY
+        value: your_api_key
+      - key: CLOUDINARY_API_SECRET
+        value: your_api_secret
     plan: free
     region: oregon
     branch: main

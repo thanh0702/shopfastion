@@ -8,7 +8,6 @@ RUN apt-get update && apt-get install -y \
     zip unzip git \
     build-essential \
     && pecl install mongodb \
-    && docker-php-ext-configure mongodb --with-mongodb-ssl=shared \
     && docker-php-ext-install mongodb \
     && docker-php-ext-enable mongodb \
     && a2enmod rewrite
