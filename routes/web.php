@@ -4,7 +4,14 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
-
+Route::get('/test-mongo', function () {
+    try {
+        $client = new MongoDB\Client(env('DB_URI'));
+        return 'Connected to MongoDB successfully!';
+    } catch (Exception $e) {
+        return $e->getMessage();
+    }
+});
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/shop', [HomeController::class, 'shop'])->name('shop');
 Route::get('/search', [HomeController::class, 'search'])->name('search');
