@@ -7,15 +7,11 @@ FROM php:8.2-apache
 
 # 2. Cài đặt các dependency cần thiết để build MongoDB extension
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        libssl-dev \
-        libcurl4-openssl-dev \
-        zip unzip git \
-        build-essential \
-        php8.2-dev \
-        pkg-config \
-        ca-certificates \
-    && pecl install mongodb \
-    && docker-php-ext-enable mongodb \
+    libssl-dev \
+    libcurl4-openssl-dev \
+    zip unzip git \
+    build-essential \
+    php8.2-mongodb \
     && a2enmod rewrite \
     && rm -rf /var/lib/apt/lists/*
 
