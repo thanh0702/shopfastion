@@ -11,9 +11,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libcurl4-openssl-dev \
     zip unzip git \
     build-essential \
-    php8.2-mongodb \
     && a2enmod rewrite \
     && rm -rf /var/lib/apt/lists/*
+
+# 2.1. Cài đặt MongoDB extension cho PHP 8.2
+RUN pecl install mongodb && docker-php-ext-enable mongodb
 
 # 3. Cài Composer từ image chính thức
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -23,6 +25,9 @@ WORKDIR /var/www/html
 
 # 5. Copy toàn bộ source code vào container
 COPY . /var/www/html
+
+# 5.1. Recreate the public/storage symlink
+RUN rm -rf public/storage && ln -s ../storage/app/public public/storage
 
 # 6. Cài đặt các dependency PHP của Laravel
 RUN composer install --no-dev --optimize-autoloader --no-scripts --ignore-platform-reqs
