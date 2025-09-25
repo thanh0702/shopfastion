@@ -1,12 +1,12 @@
-# Redesign Login Interface with Black and White Theme
+# Fix Product Detail Page Checkout Button
 
-## Tasks
-- [x] Analyze current login.blade.php structure
-- [x] Add custom CSS styles for black and white color scheme
-- [x] Update card, form, and button styles to match theme
-- [x] Test the redesigned interface (pending user verification)
+## Problem
+The "Thanh toán" (Payment) button on the product detail page has href="#" and does not redirect to the checkout page.
 
-## Notes
-- Use inline styles or <style> block to override Bootstrap defaults
-- Main colors: Black (#000000) and White (#FFFFFF)
-- Ensure readability and contrast
+## Solution
+Modify the button to submit a form that adds the product to cart and redirects to checkout.
+
+## Steps
+- [ ] Edit resources/views/product.blade.php to add a form for the "Thanh toán" button with hidden 'action' input set to 'buy'
+- [ ] Edit app/Http/Controllers/HomeController.php in addToCart method to check for $request->action == 'buy' and redirect to checkout route
+- [ ] Test the functionality by running the app and clicking the button

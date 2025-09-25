@@ -55,7 +55,13 @@
                     <button type="submit" class="btn btn-dark">Thêm vào giỏ hàng</button>
                 </form>
 
-                <a href="#" class="btn btn-dark ms-2">Thanh toán</a>
+                <form action="{{ route('cart.add') }}" method="POST" class="d-inline">
+                    @csrf
+                    <input type="hidden" name="product_id" value="{{ $product->id }}" />
+                    <input type="hidden" name="quantity" id="hiddenQuantityBuy" value="1" />
+                    <input type="hidden" name="action" value="buy" />
+                    <button type="submit" class="btn btn-dark ms-2">Thanh toán</button>
+                </form>
             </div>
         </div>
     </div>
@@ -66,6 +72,7 @@
         const increaseBtn = document.getElementById('increaseQty');
         const quantityInput = document.getElementById('quantity');
         const hiddenQuantity = document.getElementById('hiddenQuantity');
+        const hiddenQuantityBuy = document.getElementById('hiddenQuantityBuy');
 
         decreaseBtn.addEventListener('click', () => {
             let qty = parseInt(quantityInput.value);
@@ -73,6 +80,7 @@
                 qty--;
                 quantityInput.value = qty;
                 hiddenQuantity.value = qty;
+                hiddenQuantityBuy.value = qty;
             }
         });
 
@@ -83,6 +91,7 @@
                 qty++;
                 quantityInput.value = qty;
                 hiddenQuantity.value = qty;
+                hiddenQuantityBuy.value = qty;
             }
         });
 
@@ -94,6 +103,7 @@
             if (qty > max) qty = max;
             quantityInput.value = qty;
             hiddenQuantity.value = qty;
+            hiddenQuantityBuy.value = qty;
         });
     </script>
      @include('partials.footer')
