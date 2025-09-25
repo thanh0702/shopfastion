@@ -6,6 +6,47 @@
     <title>Login - ShopFashion</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-color: #FFFFFF;
+            color: #000000;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border: 1px solid #000000;
+            color: #000000;
+        }
+        .card-header {
+            background-color: #FFFFFF;
+            border-bottom: 1px solid #000000;
+            color: #000000;
+        }
+        .card-body {
+            background-color: #FFFFFF;
+        }
+        .form-label {
+            color: #000000;
+        }
+        .form-control {
+            border-color: #000000;
+            color: #000000;
+        }
+        .btn-primary {
+            background-color: #000000;
+            border-color: #000000;
+            color: #FFFFFF;
+        }
+        .btn-primary:hover {
+            background-color: #333333;
+            border-color: #333333;
+        }
+        a {
+            color: #000000;
+        }
+        a:hover {
+            color: #333333;
+        }
+    </style>
 </head>
 <body>
     @include('partials.header')
