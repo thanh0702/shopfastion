@@ -1,12 +1,12 @@
-# Fix Product Detail Page Checkout Button
+# TODO: Redesign Login and Register Interfaces
 
-## Problem
-The "Thanh toán" (Payment) button on the product detail page has href="#" and does not redirect to the checkout page.
+## Tasks
+- [x] Update login.blade.php: Make border thicker (3px), enhance box-shadow, ensure square corners
+- [ ] Update register.blade.php: Make border thicker (3px), enhance box-shadow, ensure square corners
+- [ ] Test the changes by viewing the pages
 
-## Solution
-Modify the button to submit a form that adds the product to cart and redirects to checkout.
-
-## Steps
-- [ ] Edit resources/views/product.blade.php to add a form for the "Thanh toán" button with hidden 'action' input set to 'buy'
-- [ ] Edit app/Http/Controllers/HomeController.php in addToCart method to check for $request->action == 'buy' and redirect to checkout route
-- [ ] Test the functionality by running the app and clicking the button
+## Notes
+- Main colors: Black and white
+- Thick black borders
+- Enhanced shadows
+- Square border corners
