@@ -13,14 +13,14 @@
         }
         .card {
             background-color: #FFFFFF;
-            border: 1px solid #CCCCCC;
+            border: 0px solid #CCCCCC;
             color: #000000;
             box-shadow: 0 8px 16px rgba(0,0,0,0.2);
             border-radius: 0;
         }
         .card-header {
             background-color: #FFFFFF;
-            border-bottom: 1px solid #CCCCCC;
+            border-bottom: 0px solid #CCCCCC;
             color: #000000;
         }
         .card-body {
