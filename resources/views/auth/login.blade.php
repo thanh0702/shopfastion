@@ -15,6 +15,7 @@
             background-color: #FFFFFF;
             border: 1px solid #000000;
             color: #000000;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         .card-header {
             background-color: #FFFFFF;

@@ -316,7 +316,11 @@ class HomeController extends Controller
             ]);
         }
 
-        return back()->with('success', 'Product added to cart.');
+        if ($request->action == 'buy') {
+            return redirect()->route('checkout');
+        } else {
+            return back()->with('success', 'Product added to cart.');
+        }
     }
 
     public function toggleWishlist(Request $request)
