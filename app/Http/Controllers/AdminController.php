@@ -431,8 +431,8 @@ class AdminController extends Controller
         // Total orders
         $totalOrders = \App\Models\Order::count();
 
-        // Total revenue from completed orders (assuming 'delivered' is completed)
-        $totalRevenue = \App\Models\Order::where('status', 'delivered')->sum('total_amount');
+        // Total revenue from completed orders
+        $totalRevenue = \App\Models\Order::where('status', 'completed')->sum('total_amount');
 
         // Total pending orders
         $totalPending = \App\Models\Order::where('status', 'pending')->count();
@@ -445,7 +445,7 @@ class AdminController extends Controller
         for ($i = 11; $i >= 0; $i--) {
             $date = now()->subMonths($i);
             $month = $date->format('M Y');
-            $revenue = \App\Models\Order::where('status', 'delivered')
+            $revenue = \App\Models\Order::where('status', 'completed')
                 ->whereYear('created_at', $date->year)
                 ->whereMonth('created_at', $date->month)
                 ->sum('total_amount');
