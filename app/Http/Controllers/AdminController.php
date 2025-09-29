@@ -425,4 +425,33 @@ class AdminController extends Controller
         $qrCode->delete();
         return redirect()->route('admin.qr_codes.index')->with('success', 'QR Code deleted successfully!');
     }
+
+    public function dashboard()
+    {
+        // Total orders
+        $totalOrders = \App\Models\Order::count();
+
+        // Total revenue from completed orders (assuming 'delivered' is completed)
+        $totalRevenue = \App\Models\Order::where('status', 'delivered')->sum('total_amount');
+
+        // Total pending orders
+        $totalPending = \App\Models\Order::where('status', 'pending')->count();
+
+        // Total shipping orders
+        $totalShipping = \App\Models\Order::where('status', 'shipping')->count();
+
+        // Monthly revenue for the last 12 months
+        $monthlyRevenue = [];
+        for ($i = 11; $i >= 0; $i--) {
+            $date = now()->subMonths($i);
+            $month = $date->format('M Y');
+            $revenue = \App\Models\Order::where('status', 'delivered')
+                ->whereYear('created_at', $date->year)
+                ->whereMonth('created_at', $date->month)
+                ->sum('total_amount');
+            $monthlyRevenue[$month] = $revenue;
+        }
+
+        return view('admin.dashboard', compact('totalOrders', 'totalRevenue', 'totalPending', 'totalShipping', 'monthlyRevenue'));
+    }
 }
