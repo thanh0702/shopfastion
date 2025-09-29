@@ -1,4 +1,6 @@
-- [ ] Modify AdminController to add dashboard method with order statistics
-- [ ] Update dashboard.blade.php to display statistics cards and monthly revenue chart
-- [ ] Update routes to use AdminController for dashboard
+- [x] Modify AdminController to add dashboard method with order statistics
+- [x] Update dashboard.blade.php to display statistics cards and monthly revenue chart
+- [x] Update routes to use AdminController for dashboard
+- [x] Remove management cards section from dashboard
+- [x] Fix revenue calculation to use 'completed' status instead of 'delivered'
 - [ ] Test the dashboard
