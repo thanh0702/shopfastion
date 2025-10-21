@@ -10,3 +10,4 @@
 7. ✅ Add support for .webp images in forms.
 8. ✅ Update frontend views to display first image from images array on home, product, shop, category, and search pages.
 9. ✅ Update admin products index to display up to 5 images per product.
+10. ✅ Update product detail page to display all 5 images with thumbnail gallery and click to change main image.

@@ -29,13 +29,20 @@
         <div class="row">
             <div class="col-md-6">
                 @if ($product->images && is_array($product->images) && count($product->images) > 0)
-                <img src="{{ $product->images[0] }}" class="img-fluid" alt="{{ $product->name }}" />
+                    <div class="product-gallery">
+                        <img id="main-image" src="{{ $product->images[0] }}" class="img-fluid main-image" alt="{{ $product->name }}" style="height: 400px; object-fit: cover;" />
+                        <div class="thumbnail-gallery mt-2 d-flex flex-wrap">
+                            @foreach($product->images as $index => $image)
+                                <img src="{{ $image }}" class="thumbnail me-2 mb-2" alt="{{ $product->name }}" style="width: 80px; height: 80px; object-fit: cover; cursor: pointer; border: 2px solid #ddd;" onclick="changeMainImage('{{ $image }}')" />
+                            @endforeach
+                        </div>
+                    </div>
                 @elseif ($product->image_url)
-                <img src="{{ $product->image_url }}" class="img-fluid" alt="{{ $product->name }}" />
+                    <img src="{{ $product->image_url }}" class="img-fluid" alt="{{ $product->name }}" style="height: 400px; object-fit: cover;" />
                 @else
-                <div class="bg-light d-flex align-items-center justify-content-center" style="height: 400px;">
-                    No Image
-                </div>
+                    <div class="bg-light d-flex align-items-center justify-content-center" style="height: 400px;">
+                        No Image
+                    </div>
                 @endif
             </div>
             <div class="col-md-6">
@@ -107,6 +114,10 @@
             hiddenQuantity.value = qty;
             hiddenQuantityBuy.value = qty;
         });
+
+        function changeMainImage(imageSrc) {
+            document.getElementById('main-image').src = imageSrc;
+        }
     </script>
      @include('partials.footer')
 </body>
