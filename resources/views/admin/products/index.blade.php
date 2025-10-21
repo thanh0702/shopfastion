@@ -49,7 +49,12 @@
             <td>{{ number_format($product->price, 0, ',', '.') }} VND</td>
             <td>{{ $product->stock_quantity }}</td>
             <td>
-                @if($product->image_url)
+                @if($product->images && is_array($product->images) && count($product->images) > 0)
+                    @foreach($product->images as $index => $image)
+                        <img src="{{ $image }}" alt="{{ $product->name }}" style="max-width: 50px; max-height: 50px; margin-right: 5px; margin-bottom: 5px;">
+                        @if($index >= 4) @break @endif
+                    @endforeach
+                @elseif($product->image_url)
                     <img src="{{ $product->image_url }}" alt="{{ $product->name }}" style="max-width: 100px; max-height: 100px;">
                 @else
                     No image
