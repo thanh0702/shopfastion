@@ -28,7 +28,9 @@
     <div class="container my-5">
         <div class="row">
             <div class="col-md-6">
-                @if ($product->image_url)
+                @if ($product->images && is_array($product->images) && count($product->images) > 0)
+                <img src="{{ $product->images[0] }}" class="img-fluid" alt="{{ $product->name }}" />
+                @elseif ($product->image_url)
                 <img src="{{ $product->image_url }}" class="img-fluid" alt="{{ $product->name }}" />
                 @else
                 <div class="bg-light d-flex align-items-center justify-content-center" style="height: 400px;">

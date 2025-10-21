@@ -8,3 +8,4 @@
 5. ✅ Update AdminController updateProduct method to handle multiple image uploads.
 6. ✅ Test the changes by creating and editing a product.
 7. ✅ Add support for .webp images in forms.
+8. ✅ Update frontend views to display first image from images array on home, product, shop, category, and search pages.

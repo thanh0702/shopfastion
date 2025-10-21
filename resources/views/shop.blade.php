@@ -76,7 +76,9 @@
                     <div class="col">
                         <div class="card h-100">
                             <a href="{{ route('product.show', $product->slug) }}" class="text-decoration-none">
-                                @if ($product->image_url)
+                                @if ($product->images && is_array($product->images) && count($product->images) > 0)
+                                <img src="{{ $product->images[0] }}" class="card-img-top" alt="{{ $product->name }}" />
+                                @elseif ($product->image_url)
                                 <img src="{{ $product->image_url }}" class="card-img-top" alt="{{ $product->name }}" />
                                 @else
                                 <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
