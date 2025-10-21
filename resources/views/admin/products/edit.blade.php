@@ -69,12 +69,12 @@
             @foreach($product->images as $index => $image)
                 <div class="mb-2">
                     <img src="{{ $image }}" alt="{{ $product->name }}" style="max-width: 100px; max-height: 100px; margin-right: 10px;">
-                    <input type="file" name="images[{{ $index }}]" class="form-control d-inline-block" accept="image/*" style="width: auto;" />
+                    <input type="file" name="images[{{ $index }}]" class="form-control d-inline-block" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp" style="width: auto;" />
                 </div>
             @endforeach
         @endif
         @for($i = count($product->images ?? []); $i < 5; $i++)
-            <input type="file" name="images[{{ $i }}]" class="form-control mb-2" accept="image/*" />
+            <input type="file" name="images[{{ $i }}]" class="form-control mb-2" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp" />
         @endfor
     </div>
 

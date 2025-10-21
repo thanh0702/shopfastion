@@ -6,4 +6,5 @@
 3. ✅ Modify edit product form to display existing images and allow uploading up to 5 images.
 4. ✅ Update AdminController storeProduct method to handle multiple image uploads.
 5. ✅ Update AdminController updateProduct method to handle multiple image uploads.
-6. Test the changes by creating and editing a product.
+6. ✅ Test the changes by creating and editing a product.
+7. ✅ Add support for .webp images in forms.

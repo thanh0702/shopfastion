@@ -57,11 +57,11 @@
 
     <div class="mb-3">
         <label class="form-label">Product Images (up to 5, optional)</label>
-        <input type="file" name="images[]" class="form-control mb-2" accept="image/*" />
-        <input type="file" name="images[]" class="form-control mb-2" accept="image/*" />
-        <input type="file" name="images[]" class="form-control mb-2" accept="image/*" />
-        <input type="file" name="images[]" class="form-control mb-2" accept="image/*" />
-        <input type="file" name="images[]" class="form-control mb-2" accept="image/*" />
+        <input type="file" name="images[]" class="form-control mb-2" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp" />
+        <input type="file" name="images[]" class="form-control mb-2" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp" />
+        <input type="file" name="images[]" class="form-control mb-2" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp" />
+        <input type="file" name="images[]" class="form-control mb-2" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp" />
+        <input type="file" name="images[]" class="form-control mb-2" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp" />
     </div>
 
     <button type="submit" class="btn btn-primary">Add Product</button>
