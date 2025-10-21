@@ -108,24 +108,28 @@ class AdminController extends Controller
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'stock_quantity' => 'required|integer|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
         ]);
 
-        $imageUrl = null;
-        if ($request->hasFile('image')) {
-            try {
-                Configuration::instance()->cloud->cloudName = config('services.cloudinary.cloud_name');
-                Configuration::instance()->cloud->apiKey = config('services.cloudinary.api_key');
-                Configuration::instance()->cloud->apiSecret = config('services.cloudinary.api_secret');
+        $imageUrls = [];
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                if ($image) {
+                    try {
+                        Configuration::instance()->cloud->cloudName = config('services.cloudinary.cloud_name');
+                        Configuration::instance()->cloud->apiKey = config('services.cloudinary.api_key');
+                        Configuration::instance()->cloud->apiSecret = config('services.cloudinary.api_secret');
 
-                $uploadApi = new UploadApi();
-                $uploadResult = $uploadApi->upload($request->file('image')->getRealPath(), [
-                    'folder' => 'products'
-                ]);
-                $imageUrl = $uploadResult['secure_url'];
-            } catch (\Exception $e) {
-                \Log::error('Image upload failed: ' . $e->getMessage());
-                return redirect()->back()->withErrors(['image' => 'The image failed to upload. Please try again.']);
+                        $uploadApi = new UploadApi();
+                        $uploadResult = $uploadApi->upload($image->getRealPath(), [
+                            'folder' => 'products'
+                        ]);
+                        $imageUrls[] = $uploadResult['secure_url'];
+                    } catch (\Exception $e) {
+                        \Log::error('Image upload failed: ' . $e->getMessage());
+                        return redirect()->back()->withErrors(['images' => 'One or more images failed to upload. Please try again.']);
+                    }
+                }
             }
         }
 
@@ -136,7 +140,7 @@ class AdminController extends Controller
             'description' => $request->description,
             'price' => $request->price,
             'stock_quantity' => $request->stock_quantity,
-            'image_url' => $imageUrl,
+            'images' => $imageUrls,
         ]);
 
         return redirect()->route('admin.dashboard')->with('success', 'Product created successfully!');
@@ -156,26 +160,32 @@ class AdminController extends Controller
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'stock_quantity' => 'required|integer|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
         ]);
 
-        $imageUrl = $product->image_url;
-        if ($request->hasFile('image')) {
-            try {
-                Configuration::instance()->cloud->cloudName = config('services.cloudinary.cloud_name');
-                Configuration::instance()->cloud->apiKey = config('services.cloudinary.api_key');
-                Configuration::instance()->cloud->apiSecret = config('services.cloudinary.api_secret');
+        $imageUrls = $product->images ?? [];
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $index => $image) {
+                if ($image) {
+                    try {
+                        Configuration::instance()->cloud->cloudName = config('services.cloudinary.cloud_name');
+                        Configuration::instance()->cloud->apiKey = config('services.cloudinary.api_key');
+                        Configuration::instance()->cloud->apiSecret = config('services.cloudinary.api_secret');
 
-                $uploadApi = new UploadApi();
-                $uploadResult = $uploadApi->upload($request->file('image')->getRealPath(), [
-                    'folder' => 'products'
-                ]);
-                $imageUrl = $uploadResult['secure_url'];
-            } catch (\Exception $e) {
-                \Log::error('Image upload failed: ' . $e->getMessage());
-                return redirect()->back()->withErrors(['image' => 'The image failed to upload. Please try again.']);
+                        $uploadApi = new UploadApi();
+                        $uploadResult = $uploadApi->upload($image->getRealPath(), [
+                            'folder' => 'products'
+                        ]);
+                        $imageUrls[$index] = $uploadResult['secure_url'];
+                    } catch (\Exception $e) {
+                        \Log::error('Image upload failed: ' . $e->getMessage());
+                        return redirect()->back()->withErrors(['images' => 'One or more images failed to upload. Please try again.']);
+                    }
+                }
             }
         }
+        // Remove null values and reindex array
+        $imageUrls = array_values(array_filter($imageUrls));
 
         $product->update([
             'category_id' => $request->category_id,
@@ -184,7 +194,7 @@ class AdminController extends Controller
             'description' => $request->description,
             'price' => $request->price,
             'stock_quantity' => $request->stock_quantity,
-            'image_url' => $imageUrl,
+            'images' => $imageUrls,
         ]);
 
         return redirect()->route('admin.products.index')->with('success', 'Product updated successfully!');

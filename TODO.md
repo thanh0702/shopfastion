@@ -1,6 +1,9 @@
-- [x] Modify AdminController to add dashboard method with order statistics
-- [x] Update dashboard.blade.php to display statistics cards and monthly revenue chart
-- [x] Update routes to use AdminController for dashboard
-- [x] Remove management cards section from dashboard
-- [x] Fix revenue calculation to use 'completed' status instead of 'delivered'
-- [ ] Test the dashboard
+# TODO: Add 4 More Images to Products (Total 5 Images)
+
+## Steps Completed:
+1. ✅ Update Product model to use 'images' array instead of 'image_url'.
+2. ✅ Modify create product form to allow uploading up to 5 images.
+3. ✅ Modify edit product form to display existing images and allow uploading up to 5 images.
+4. ✅ Update AdminController storeProduct method to handle multiple image uploads.
+5. ✅ Update AdminController updateProduct method to handle multiple image uploads.
+6. Test the changes by creating and editing a product.

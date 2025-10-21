@@ -64,11 +64,18 @@
     </div>
 
     <div class="mb-3">
-        <label for="image" class="form-label">Product Image</label>
-        @if($product->image_url)
-            <img src="{{ $product->image_url }}" alt="{{ $product->name }}" style="max-width: 100px; max-height: 100px; margin-bottom: 10px;">
+        <label class="form-label">Product Images (up to 5)</label>
+        @if($product->images && is_array($product->images))
+            @foreach($product->images as $index => $image)
+                <div class="mb-2">
+                    <img src="{{ $image }}" alt="{{ $product->name }}" style="max-width: 100px; max-height: 100px; margin-right: 10px;">
+                    <input type="file" name="images[{{ $index }}]" class="form-control d-inline-block" accept="image/*" style="width: auto;" />
+                </div>
+            @endforeach
         @endif
-        <input type="file" name="image" id="image" class="form-control" accept="image/*" />
+        @for($i = count($product->images ?? []); $i < 5; $i++)
+            <input type="file" name="images[{{ $i }}]" class="form-control mb-2" accept="image/*" />
+        @endfor
     </div>
 
     <button type="submit" class="btn btn-primary">Update Product</button>

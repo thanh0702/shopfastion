@@ -11,7 +11,7 @@ class Product extends Model
 
     protected $connection = 'mongodb';
 
-    protected $fillable = ['category_id', 'name', 'slug', 'description', 'price', 'stock_quantity', 'image_url'];
+    protected $fillable = ['category_id', 'name', 'slug', 'description', 'price', 'stock_quantity', 'images'];
 
     public function category()
     {
