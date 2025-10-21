@@ -56,6 +56,11 @@
     </div>
 
     <div class="mb-3">
+        <label for="size" class="form-label">Size (optional)</label>
+        <input type="text" name="size" id="size" class="form-control" value="{{ old('size') }}" placeholder="e.g., S, M, L, XL" />
+    </div>
+
+    <div class="mb-3">
         <label class="form-label">Product Images (up to 5, optional)</label>
         <input type="file" name="images[]" class="form-control mb-2" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp" />
         <input type="file" name="images[]" class="form-control mb-2" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp" />

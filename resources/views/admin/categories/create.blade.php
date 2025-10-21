@@ -53,6 +53,19 @@
             <input type="file" class="form-control" id="image" name="image" accept="image/*">
         </div>
     </div>
+    <div class="row mb-4">
+        <div class="col-sm-2">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="has_sizes" name="has_sizes">
+                <label class="form-check-label" for="has_sizes">
+                    Has Sizes
+                </label>
+            </div>
+        </div>
+        <div class="col-sm-10">
+            <textarea class="form-control" id="sizes" name="sizes" rows="3" placeholder="Enter sizes (one per line or comma-separated)" disabled>{{ old('sizes') }}</textarea>
+        </div>
+    </div>
     <button type="submit" class="btn btn-primary">Save</button>
 </form>
 
@@ -61,6 +74,14 @@ document.getElementById('name').addEventListener('input', function() {
     var name = this.value;
     var slug = name.toLowerCase().replace(/[^a-z0-9 -]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-');
     document.getElementById('slug').value = slug;
+});
+
+document.getElementById('has_sizes').addEventListener('change', function() {
+    var sizesTextarea = document.getElementById('sizes');
+    sizesTextarea.disabled = !this.checked;
+    if (!this.checked) {
+        sizesTextarea.value = '';
+    }
 });
 </script>
 @endsection

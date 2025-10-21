@@ -36,6 +36,7 @@
             <th>Danh mục</th>
             <th>Giá</th>
             <th>Số lượng tồn kho</th>
+            <th>Kích thước</th>
             <th>Hình ảnh</th>
             <th>Hành động</th>
         </tr>
@@ -48,6 +49,7 @@
             <td>{{ $product->category->name ?? 'N/A' }}</td>
             <td>{{ number_format($product->price, 0, ',', '.') }} VND</td>
             <td>{{ $product->stock_quantity }}</td>
+            <td>{{ $product->size ?? 'N/A' }}</td>
             <td>
                 @if($product->images && is_array($product->images) && count($product->images) > 0)
                     @foreach($product->images as $index => $image)

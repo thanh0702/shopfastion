@@ -36,6 +36,7 @@
             <th>Slug</th>
             <th>Mô tả</th>
             <th>Hình ảnh</th>
+            <th>Kích thước</th>
             <th>Hành động</th>
         </tr>
     </thead>
@@ -51,6 +52,13 @@
                     <img src="{{ $category->imageurl }}" alt="{{ $category->name }}" style="max-width: 100px; max-height: 100px;">
                 @else
                     No image
+                @endif
+            </td>
+            <td>
+                @if($category->sizes && is_array($category->sizes))
+                    {{ implode(', ', $category->sizes) }}
+                @else
+                    N/A
                 @endif
             </td>
             <td>

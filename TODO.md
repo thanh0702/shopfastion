@@ -1,13 +1,10 @@
-# TODO: Add 4 More Images to Products (Total 5 Images)
+# TODO: Add Size Option to Products
 
-## Steps Completed:
-1. ✅ Update Product model to use 'images' array instead of 'image_url'.
-2. ✅ Modify create product form to allow uploading up to 5 images.
-3. ✅ Modify edit product form to display existing images and allow uploading up to 5 images.
-4. ✅ Update AdminController storeProduct method to handle multiple image uploads.
-5. ✅ Update AdminController updateProduct method to handle multiple image uploads.
-6. ✅ Test the changes by creating and editing a product.
-7. ✅ Add support for .webp images in forms.
-8. ✅ Update frontend views to display first image from images array on home, product, shop, category, and search pages.
-9. ✅ Update admin products index to display up to 5 images per product.
-10. ✅ Update product detail page to display all 5 images with thumbnail gallery and click to change main image.
+## Steps to Complete:
+1. [x] Update Product model to include 'size' in fillable.
+2. [x] Update create product form to include size input.
+3. [x] Update edit product form to include size input.
+4. [x] Update index product view to display size column.
+5. [x] Update storeProduct method to handle size.
+6. [x] Update updateProduct method to handle size.
+7. [ ] Test creating and editing products with size.

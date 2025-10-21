@@ -56,6 +56,7 @@ class AdminController extends Controller
             'slug' => 'required|string|max:255|unique:categories,slug',
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'sizes' => 'nullable|string',
         ]);
 
         $imageUrl = null;
@@ -77,11 +78,18 @@ class AdminController extends Controller
             }
         }
 
+        $sizes = null;
+        if ($request->has('has_sizes') && $request->sizes) {
+            $sizes = array_map('trim', preg_split('/[\r\n,]+/', $request->sizes));
+            $sizes = array_filter($sizes);
+        }
+
         Category::create([
             'name' => $request->name,
             'slug' => $request->slug,
             'description' => $request->description,
             'imageurl' => $imageUrl,
+            'sizes' => $sizes,
         ]);
 
         return redirect()->route('admin.dashboard')->with('success', 'Category created successfully!');
@@ -108,6 +116,7 @@ class AdminController extends Controller
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'stock_quantity' => 'required|integer|min:0',
+            'size' => 'nullable|string|max:255',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
         ]);
 
@@ -140,6 +149,7 @@ class AdminController extends Controller
             'description' => $request->description,
             'price' => $request->price,
             'stock_quantity' => $request->stock_quantity,
+            'size' => $request->size,
             'images' => $imageUrls,
         ]);
 
@@ -160,6 +170,7 @@ class AdminController extends Controller
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'stock_quantity' => 'required|integer|min:0',
+            'size' => 'nullable|string|max:255',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
         ]);
 
@@ -194,6 +205,7 @@ class AdminController extends Controller
             'description' => $request->description,
             'price' => $request->price,
             'stock_quantity' => $request->stock_quantity,
+            'size' => $request->size,
             'images' => $imageUrls,
         ]);
 
@@ -218,6 +230,7 @@ class AdminController extends Controller
             'slug' => 'required|string|max:255|unique:categories,slug,' . $category->id,
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'sizes' => 'nullable|string',
         ]);
 
         $imageUrl = $category->imageurl;
@@ -239,11 +252,20 @@ class AdminController extends Controller
             }
         }
 
+        $sizes = $category->sizes;
+        if ($request->has('has_sizes') && $request->sizes) {
+            $sizes = array_map('trim', preg_split('/[\r\n,]+/', $request->sizes));
+            $sizes = array_filter($sizes);
+        } elseif (!$request->has('has_sizes')) {
+            $sizes = null;
+        }
+
         $category->update([
             'name' => $request->name,
             'slug' => $request->slug,
             'description' => $request->description,
             'imageurl' => $imageUrl,
+            'sizes' => $sizes,
         ]);
 
         return redirect()->route('admin.categories.index')->with('success', 'Category updated successfully!');

@@ -64,6 +64,11 @@
     </div>
 
     <div class="mb-3">
+        <label for="size" class="form-label">Size (optional)</label>
+        <input type="text" name="size" id="size" class="form-control" value="{{ old('size', $product->size) }}" placeholder="e.g., S, M, L, XL" />
+    </div>
+
+    <div class="mb-3">
         <label class="form-label">Product Images (up to 5)</label>
         @if($product->images && is_array($product->images))
             @foreach($product->images as $index => $image)
