@@ -11,7 +11,7 @@ class CartItem extends Model
 
     protected $connection = 'mongodb';
 
-    protected $fillable = ['cart_id', 'product_id', 'quantity'];
+    protected $fillable = ['cart_id', 'product_id', 'quantity', 'size'];
 
     public function cart()
     {

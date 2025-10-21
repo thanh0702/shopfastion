@@ -51,6 +51,18 @@
                 <h3 class="text-danger">{{ number_format($product->price, 0, ',', '.') }} VND</h3>
                 <p>Số lượng còn lại: {{ $product->stock_quantity }}</p>
 
+                @if($product->size)
+                    <div class="mb-3">
+                        <label class="form-label">Kích thước:</label>
+                        <div class="d-flex flex-wrap">
+                            @foreach(explode(',', $product->size) as $sizeOption)
+                                <button type="button" class="btn btn-outline-secondary me-2 mb-2 size-btn" data-size="{{ trim($sizeOption) }}">{{ trim($sizeOption) }}</button>
+                            @endforeach
+                        </div>
+                        <input type="hidden" name="selected_size" id="selected_size" />
+                    </div>
+                @endif
+
                 <div class="input-group mb-3" style="width: 120px;">
                     <button class="btn btn-dark" type="button" id="decreaseQty">-</button>
                     <input type="number" id="quantity" class="form-control text-center" value="1" min="1" max="{{ $product->stock_quantity }}" />
@@ -61,6 +73,7 @@
                     @csrf
                     <input type="hidden" name="product_id" value="{{ $product->id }}" />
                     <input type="hidden" name="quantity" id="hiddenQuantity" value="1" />
+                    <input type="hidden" name="size" id="hiddenSize" value="" />
                     <button type="submit" class="btn btn-dark">Thêm vào giỏ hàng</button>
                 </form>
 
@@ -68,6 +81,7 @@
                     @csrf
                     <input type="hidden" name="product_id" value="{{ $product->id }}" />
                     <input type="hidden" name="quantity" id="hiddenQuantityBuy" value="1" />
+                    <input type="hidden" name="size" id="hiddenSizeBuy" value="" />
                     <input type="hidden" name="action" value="buy" />
                     <button type="submit" class="btn btn-dark ms-2">Thanh toán</button>
                 </form>
@@ -118,6 +132,23 @@
         function changeMainImage(imageSrc) {
             document.getElementById('main-image').src = imageSrc;
         }
+
+        // Size selection
+        const sizeButtons = document.querySelectorAll('.size-btn');
+        const selectedSizeInput = document.getElementById('selected_size');
+        const hiddenSize = document.getElementById('hiddenSize');
+        const hiddenSizeBuy = document.getElementById('hiddenSizeBuy');
+
+        sizeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                sizeButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                const size = button.getAttribute('data-size');
+                selectedSizeInput.value = size;
+                hiddenSize.value = size;
+                hiddenSizeBuy.value = size;
+            });
+        });
     </script>
      @include('partials.footer')
 </body>

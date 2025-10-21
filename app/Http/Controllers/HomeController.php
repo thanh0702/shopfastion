@@ -296,6 +296,7 @@ class HomeController extends Controller
         $request->validate([
             'product_id' => 'required|exists:products,id',
             'quantity' => 'required|integer|min:1',
+            'size' => 'nullable|string|max:255',
         ]);
 
         $user = auth()->user();
@@ -303,6 +304,7 @@ class HomeController extends Controller
 
         $cartItem = CartItem::where('cart_id', $cart->id)
                             ->where('product_id', $request->product_id)
+                            ->where('size', $request->size)
                             ->first();
 
         if ($cartItem) {
@@ -313,6 +315,7 @@ class HomeController extends Controller
                 'cart_id' => $cart->id,
                 'product_id' => $request->product_id,
                 'quantity' => $request->quantity,
+                'size' => $request->size,
             ]);
         }
 
@@ -465,6 +468,7 @@ class HomeController extends Controller
                 'product_id' => $item->product_id,
                 'quantity' => $item->quantity,
                 'price' => $item->product->price,
+                'size' => $item->size,
             ]);
         }
 

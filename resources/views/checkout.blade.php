@@ -50,11 +50,16 @@
                     @php $total = 0; @endphp
                     @foreach($cartItems as $item)
                     <div class="d-flex align-items-center mb-3">
-                        @if ($item->product->image_url)
+                        @if ($item->product->images && is_array($item->product->images) && count($item->product->images) > 0)
+                        <img src="{{ $item->product->images[0] }}" alt="{{ $item->product->name }}" class="img-thumbnail me-3" style="width: 80px; height: 80px;">
+                        @elseif ($item->product->image_url)
                         <img src="{{ $item->product->image_url }}" alt="{{ $item->product->name }}" class="img-thumbnail me-3" style="width: 80px; height: 80px;">
                         @endif
                         <div class="flex-grow-1">
                             <h6 class="mb-0">{{ $item->product->name }}</h6>
+                            @if($item->size)
+                                <p class="mb-0">Size: {{ $item->size }}</p>
+                            @endif
                             <p class="mb-0">Số lượng: {{ $item->quantity }}</p>
                         </div>
                         <div class="text-end">

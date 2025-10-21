@@ -34,11 +34,16 @@
                     <tr>
                         <td>
                             <div class="d-flex align-items-center">
-                                @if ($item->product->image_url)
+                                @if ($item->product->images && is_array($item->product->images) && count($item->product->images) > 0)
+                                <img src="{{ $item->product->images[0] }}" alt="{{ $item->product->name }}" class="img-thumbnail me-3" style="width: 80px; height: 80px;">
+                                @elseif ($item->product->image_url)
                                 <img src="{{ $item->product->image_url }}" alt="{{ $item->product->name }}" class="img-thumbnail me-3" style="width: 80px; height: 80px;">
                                 @endif
                                 <div>
                                     <h6 class="mb-0"><a href="{{ route('product.show', $item->product->slug) }}" class="text-decoration-none">{{ $item->product->name }}</a></h6>
+                                    @if($item->size)
+                                        <small class="text-muted">Size: {{ $item->size }}</small>
+                                    @endif
                                 </div>
                             </div>
                         </td>

@@ -121,7 +121,9 @@
             <h4 class="mb-3">Products</h4>
             @foreach($order->orderItems as $item)
                 <div class="product-card">
-                    @if ($item->product->image_url)
+                    @if ($item->product->images && is_array($item->product->images) && count($item->product->images) > 0)
+                    <img src="{{ $item->product->images[0] }}" alt="{{ $item->product->name }}" class="product-image">
+                    @elseif ($item->product->image_url)
                     <img src="{{ $item->product->image_url }}" alt="{{ $item->product->name }}" class="product-image">
                     @else
                     <div class="product-image bg-light d-flex align-items-center justify-content-center">
@@ -131,6 +133,9 @@
                     <div class="flex-grow-1">
                         <h6>{{ $item->product->name }}</h6>
                         <p class="mb-1">{{ $item->product->description }}</p>
+                        @if($item->size)
+                            <p class="mb-0"><strong>Size:</strong> {{ $item->size }}</p>
+                        @endif
                         <p class="mb-0"><strong>Quantity:</strong> {{ $item->quantity }}</p>
                         <p class="mb-0"><strong>Price:</strong> ${{ number_format($item->price, 2) }}</p>
                         <p class="mb-0"><strong>Subtotal:</strong> ${{ number_format($item->price * $item->quantity, 2) }}</p>
