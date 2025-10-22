@@ -29,12 +29,14 @@
         <div class="row">
             <div class="col-md-6">
                 @if ($product->images && is_array($product->images) && count($product->images) > 0)
-                    <div class="product-gallery">
-                        <img id="main-image" src="{{ $product->images[0] }}" class="img-fluid main-image" alt="{{ $product->name }}" style="height: 400px; object-fit: cover;" />
-                        <div class="thumbnail-gallery mt-2 d-flex flex-wrap">
+                    <div class="product-gallery d-flex">
+                        <div class="thumbnail-gallery me-3 d-flex flex-column">
                             @foreach($product->images as $index => $image)
-                                <img src="{{ $image }}" class="thumbnail me-2 mb-2" alt="{{ $product->name }}" style="width: 80px; height: 80px; object-fit: cover; cursor: pointer; border: 2px solid #ddd;" onclick="changeMainImage('{{ $image }}')" />
+                                <img src="{{ $image }}" class="thumbnail mb-2" alt="{{ $product->name }}" style="width: 80px; height: 80px; object-fit: cover; cursor: pointer; border: 2px solid #ddd;" onclick="changeMainImage('{{ $image }}')" />
                             @endforeach
+                        </div>
+                        <div class="main-image-container">
+                            <img id="main-image" src="{{ $product->images[0] }}" class="img-fluid main-image" alt="{{ $product->name }}" style="height: 400px; object-fit: cover;" />
                         </div>
                     </div>
                 @elseif ($product->image_url)
