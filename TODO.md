@@ -1,18 +1,11 @@
-# TODO: Add Size Option to Products
+# TODO: Add Hover Effect to Shop Page Products
 
-## Steps to Complete:
-1. [x] Update Product model to include 'size' in fillable.
-2. [x] Update create product form to include size input.
-3. [x] Update edit product form to include size input.
-4. [x] Update index product view to display size column.
-5. [x] Update storeProduct method to handle size.
-6. [x] Update updateProduct method to handle size.
-7. [x] Add size selection to product detail page.
-8. [x] Update CartItem model to include size.
-9. [x] Update addToCart method to handle size.
-10. [x] Update cart view to display size.
-11. [x] Update checkout view to display size.
-12. [x] Update OrderItem model to include size.
-13. [x] Update order creation to include size.
-14. [x] Update order details view to display size.
-15. [ ] Test creating and editing products with size and images.
+## Tasks
+- [x] Add CSS styles for hover lift effect on product cards
+- [x] Modify product card HTML to support image switching on hover (if second image exists)
+- [ ] Test the hover effects in the browser
+
+## Details
+- Lift effect: Use CSS transform and transition for smooth animation
+- Image switch: Use two img elements with CSS hover to toggle visibility
+- Ensure compatibility with existing Bootstrap styles
