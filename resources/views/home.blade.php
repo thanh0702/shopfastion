@@ -34,101 +34,6 @@
         .product-card:hover .product-image.second {
             opacity: 1;
         }
-
-        /* === CHATBOT STYLE === */
-        #chatbot-icon {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            background-color: #007bff;
-            color: white;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            cursor: pointer;
-            box-shadow: 0 0 10px rgba(0,0,0,0.2);
-            z-index: 999;
-        }
-
-        #chatbot {
-            position: fixed;
-            bottom: 100px;
-            right: 25px;
-            width: 320px;
-            height: 420px;
-            background: #fff;
-            border-radius: 10px;
-            border: 1px solid #ccc;
-            box-shadow: 0 0 10px rgba(0,0,0,0.2);
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-            font-size: 14px;
-            z-index: 999;
-        }
-
-        #chat-header {
-            background: #007bff;
-            color: white;
-            padding: 10px;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        #chat-log {
-            flex: 1;
-            padding: 10px;
-            overflow-y: auto;
-        }
-
-        #chat-input {
-            display: flex;
-            border-top: 1px solid #ccc;
-        }
-
-        #chat-input input {
-            flex: 1;
-            border: none;
-            padding: 10px;
-            font-size: 14px;
-        }
-
-        #chat-input button {
-            border: none;
-            background: #007bff;
-            color: white;
-            padding: 10px 15px;
-            cursor: pointer;
-        }
-
-        .user-msg {
-            text-align: right;
-            margin-bottom: 10px;
-        }
-
-        .bot-msg {
-            text-align: left;
-            margin-bottom: 10px;
-        }
-
-        .msg-bubble {
-            display: inline-block;
-            padding: 8px 12px;
-            border-radius: 10px;
-            max-width: 80%;
-        }
-
-        .user-msg .msg-bubble {
-            background: #dcf8c6;
-        }
-
-        .bot-msg .msg-bubble {
-            background: #f1f0f0;
-        }
     </style>
 </head>
 <body>
@@ -158,7 +63,8 @@
             <span class="visually-hidden">Next</span>
         </button>
     </div>
-
+    
+    
     <div class="container py-4" style="background-color: #4a0b0b; color: white; height: 200px; margin: 50px auto 0 auto; max-width: 1140px;">
         <div class="row text-center h-100 align-items-center">
             <div class="col-md-3 mb-3">
@@ -185,11 +91,12 @@
     </div>
     @endif
 
+    
+
+
     @foreach ($categories as $category)
     <div class="container my-5">
-        <h2 class="text-center mb-4">
-            <a href="{{ route('category.show', $category->slug) }}" class="text-decoration-none fw-bold text-dark">{{ $category->name }}</a>
-        </h2>
+        <h2 class="text-center mb-4"><a href="{{ route('category.show', $category->slug) }}" class="text-decoration-none fw-bold text-dark">{{ $category->name }}</a></h2>
         <div class="row row-cols-1 row-cols-md-4 g-4">
             @foreach ($category->products->take(8) as $product)
             <div class="col">
@@ -223,25 +130,33 @@
             </div>
             @endforeach
         </div>
+        <style>
+            .btn-view-all {
+                background-color: #4a0b0b;
+                color: white !important;
+                font-weight: bold;
+                padding: 10px 20px;
+                border-radius: 4px;
+                text-decoration: none;
+                display: inline-block;
+                transition: background-color 0.3s ease;
+            }
+            .btn-view-all:hover {
+                background-color: #7a1a1a;
+                color: white !important;
+                text-decoration: none;
+                transform: scale(1.05);
+                box-shadow: 0 0 8px rgba(122, 26, 26, 0.7);
+                transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            }
+        </style>
         <div class="text-center mt-3">
-            <a href="{{ route('category.show', $category->slug) }}" class="btn-view-all" style="background-color: #4a0b0b; color: white; font-weight: bold; padding: 10px 20px; border-radius: 4px; text-decoration: none;">Xem tất cả</a>
+            <a href="{{ route('category.show', $category->slug) }}" class="btn-view-all">Xem tất cả</a>
         </div>
     </div>
     @endforeach
 
-    <div id="chatbot-icon"><i class="bi bi-chat-dots"></i></div>
-
-    <div id="chatbot">
-        <div id="chat-header">Chatbot Hỗ Trợ</div>
-        <div id="chat-log"></div>
-        <div id="chat-input">
-            <input type="text" id="message" placeholder="Nhập tin nhắn...">
-            <button id="send">Gửi</button>
-        </div>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
     @if(Auth::check())
     <script>
         function updateWishlistBadge(delta) {
@@ -256,11 +171,12 @@
                     if (badge) badge.remove();
                 }
             } else if (delta > 0) {
+                // If no badge, create one
                 const wishlistLink = document.querySelector('a[href*="wishlist"]');
                 if (wishlistLink) {
                     const badge = document.createElement('span');
                     badge.className = 'position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger text-white';
-                    badge.innerHTML = '<span class="wishlist-count">1</span>';
+                    badge.innerHTML = '<span class="wishlist-count">1</span><span class="visually-hidden">items in wishlist</span>';
                     wishlistLink.appendChild(badge);
                 }
             }
@@ -280,7 +196,7 @@
                         },
                         body: JSON.stringify({ product_id: productId })
                     })
-                    .then(res => res.json())
+                    .then(response => response.json())
                     .then(data => {
                         if (data.success) {
                             if (data.added) {
@@ -291,63 +207,14 @@
                                 updateWishlistBadge(-1);
                             }
                         }
-                    });
+                    })
+                    .catch(error => console.error('Error:', error));
                 });
             });
         });
     </script>
     @endif
-
-    <script>
-        const chatbot = document.getElementById('chatbot');
-        const chatbotIcon = document.getElementById('chatbot-icon');
-        const log = document.getElementById('chat-log');
-        const input = document.getElementById('message');
-        const send = document.getElementById('send');
-
-        chatbotIcon.onclick = () => {
-            chatbot.style.display = chatbot.style.display === 'flex' ? 'none' : 'flex';
-        };
-
-        const replies = {
-            "xin chào": "Chào bạn! Mình là chatbot hỗ trợ của Shop Thời Trang 😊",
-            "chào": "Xin chào bạn! Bạn cần giúp gì hôm nay?",
-            "bạn là ai": "Mình là chatbot tư vấn sản phẩm và hỗ trợ khách hàng!",
-            "giờ làm việc": "Cửa hàng hoạt động từ 8h00 đến 21h00 mỗi ngày.",
-            "tư vấn": "Bạn muốn mình tư vấn sản phẩm nào ạ? 👗👕👞",
-            "giá": "Giá sản phẩm sẽ hiển thị ở phần chi tiết, bạn nói tên sản phẩm nhé!",
-            "tạm biệt": "Cảm ơn bạn đã trò chuyện! Hẹn gặp lại ❤️"
-        };
-
-        function addMessage(text, sender) {
-            const div = document.createElement('div');
-            div.className = sender === 'user' ? 'user-msg' : 'bot-msg';
-            div.innerHTML = `<div class="msg-bubble">${text}</div>`;
-            log.appendChild(div);
-            log.scrollTop = log.scrollHeight;
-        }
-
-        send.onclick = () => {
-            const msg = input.value.trim().toLowerCase();
-            if (!msg) return;
-            addMessage(input.value, 'user');
-            input.value = '';
-
-            let reply = "Xin lỗi, mình chưa hiểu ý bạn 😅";
-            for (let key in replies) {
-                if (msg.includes(key)) {
-                    reply = replies[key];
-                    break;
-                }
-            }
-            setTimeout(() => addMessage(reply, 'bot'), 500);
-        };
-
-        input.addEventListener("keypress", function(e) {
-            if (e.key === "Enter") send.click();
-        });
-    </script>
-
     @include('partials.footer')
 </body>
+
 </html>
