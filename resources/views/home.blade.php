@@ -34,6 +34,102 @@
         .product-card:hover .product-image.second {
             opacity: 1;
         }
+
+        /* Chatbot Styles */
+        .chatbot-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: #4a0b0b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+        .chatbot-icon:hover {
+            transform: scale(1.1);
+        }
+        .chatbot-icon i {
+            color: white;
+            font-size: 24px;
+        }
+        .chatbot-window {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 350px;
+            height: 500px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
+        }
+        .chatbot-header {
+            background-color: #4a0b0b;
+            color: white;
+            padding: 15px;
+            border-radius: 10px 10px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chatbot-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+        }
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+        .message.user {
+            background-color: #4a0b0b;
+            color: white;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        .message.bot {
+            background-color: #e9ecef;
+            color: black;
+        }
+        .chatbot-input {
+            padding: 15px;
+            border-top: 1px solid #dee2e6;
+            display: flex;
+        }
+        .chatbot-input input {
+            flex: 1;
+            border: 1px solid #dee2e6;
+            border-radius: 20px;
+            padding: 10px 15px;
+            margin-right: 10px;
+        }
+        .chatbot-input button {
+            background-color: #4a0b0b;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .chatbot-input button:hover {
+            background-color: #7a1a1a;
+        }
     </style>
 </head>
 <body>
@@ -214,7 +310,94 @@
         });
     </script>
     @endif
+
+    <!-- Chatbot HTML -->
+    <div class="chatbot-icon" id="chatbotIcon">
+        <i class="bi bi-chat-dots"></i>
+    </div>
+    <div class="chatbot-window" id="chatbotWindow">
+        <div class="chatbot-header">
+            <span>Chatbot Hỗ Trợ</span>
+            <button class="btn-close btn-close-white" id="closeChatbot"></button>
+        </div>
+        <div class="chatbot-messages" id="chatbotMessages">
+            <div class="message bot">Chào bạn! Mình là chatbot hỗ trợ của Shop Thời Trang. Bạn cần giúp gì hôm nay? 😊</div>
+        </div>
+        <div class="chatbot-input">
+            <input type="text" id="chatbotInput" placeholder="Nhập tin nhắn...">
+            <button id="sendMessage"><i class="bi bi-send"></i></button>
+        </div>
+    </div>
+
     @include('partials.footer')
+
+    <!-- Chatbot JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatbotIcon = document.getElementById('chatbotIcon');
+            const chatbotWindow = document.getElementById('chatbotWindow');
+            const closeChatbot = document.getElementById('closeChatbot');
+            const chatbotInput = document.getElementById('chatbotInput');
+            const sendMessage = document.getElementById('sendMessage');
+            const chatbotMessages = document.getElementById('chatbotMessages');
+
+            const replies = {
+                "xin chào": "Chào bạn! Mình là chatbot hỗ trợ của Shop Thời Trang 😊",
+                "chào": "Xin chào bạn! Bạn cần giúp gì hôm nay?",
+                "bạn là ai": "Mình là chatbot tư vấn sản phẩm và hỗ trợ khách hàng!",
+                "giờ làm việc": "Cửa hàng hoạt động từ 8h00 đến 21h00 mỗi ngày.",
+                "tư vấn": "Bạn muốn mình tư vấn sản phẩm nào ạ? 👗👕👞",
+                "giá": "Giá sản phẩm sẽ hiển thị ở phần chi tiết, bạn nói tên sản phẩm nhé!",
+                "tạm biệt": "Cảm ơn bạn đã trò chuyện! Hẹn gặp lại ❤️"
+            };
+
+            function addMessage(content, type) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${type}`;
+                messageDiv.textContent = content;
+                chatbotMessages.appendChild(messageDiv);
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            }
+
+            function getBotResponse(userMessage) {
+                const lowerMessage = userMessage.toLowerCase();
+                for (const keyword in replies) {
+                    if (lowerMessage.includes(keyword)) {
+                        return replies[keyword];
+                    }
+                }
+                return "Xin lỗi, mình chưa hiểu ý bạn 😅";
+            }
+
+            function sendUserMessage() {
+                const message = chatbotInput.value.trim();
+                if (message) {
+                    addMessage(message, 'user');
+                    const response = getBotResponse(message);
+                    setTimeout(() => addMessage(response, 'bot'), 500);
+                    chatbotInput.value = '';
+                }
+            }
+
+            chatbotIcon.addEventListener('click', () => {
+                chatbotWindow.style.display = 'flex';
+                chatbotIcon.style.display = 'none';
+            });
+
+            closeChatbot.addEventListener('click', () => {
+                chatbotWindow.style.display = 'none';
+                chatbotIcon.style.display = 'flex';
+            });
+
+            sendMessage.addEventListener('click', sendUserMessage);
+
+            chatbotInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendUserMessage();
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
