@@ -93,9 +93,5 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     // Chat Message management
     Route::get('/admin/chat_messages', [App\Http\Controllers\AdminController::class, 'indexChatMessages'])->name('admin.chat_messages.index');
-    Route::get('/admin/chat_messages/create', [App\Http\Controllers\AdminController::class, 'createChatMessage'])->name('admin.chat_messages.create');
-    Route::post('/admin/chat_messages', [App\Http\Controllers\AdminController::class, 'storeChatMessage'])->name('admin.chat_messages.store');
     Route::get('/admin/chat_messages/{chatMessage}/edit', [App\Http\Controllers\AdminController::class, 'editChatMessage'])->name('admin.chat_messages.edit');
-    Route::put('/admin/chat_messages/{chatMessage}', [App\Http\Controllers\AdminController::class, 'updateChatMessage'])->name('admin.chat_messages.update');
-    Route::delete('/admin/chat_messages/{chatMessage}', [App\Http\Controllers\AdminController::class, 'deleteChatMessage'])->name('admin.chat_messages.delete');
 });

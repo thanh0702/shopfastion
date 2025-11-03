@@ -6,31 +6,56 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Sửa tin nhắn chat</h3>
+                    <h3 class="card-title">Chi tiết tin nhắn chat</h3>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('admin.chat_messages.update', $chatMessage) }}" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <div class="form-group">
-                            <label for="message">Tin nhắn</label>
-                            <textarea class="form-control" id="message" name="message" rows="3" required>{{ old('message', $chatMessage->message) }}</textarea>
-                        </div>
-                        <div class="form-group">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="is_user" name="is_user" value="1" {{ old('is_user', $chatMessage->is_user) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="is_user">
-                                    Là tin nhắn của người dùng
-                                </label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label><strong>ID:</strong></label>
+                                <p>{{ $chatMessage->id }}</p>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="session_id">Session ID</label>
-                            <input type="text" class="form-control" id="session_id" name="session_id" value="{{ old('session_id', $chatMessage->session_id) }}">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label><strong>Người dùng:</strong></label>
+                                <p>{{ $chatMessage->user ? $chatMessage->user->name : 'Khách' }}</p>
+                            </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Cập nhật</button>
-                        <a href="{{ route('admin.chat_messages.index') }}" class="btn btn-secondary">Hủy</a>
-                    </form>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label><strong>Loại tin nhắn:</strong></label>
+                                <p>
+                                    <span class="badge {{ $chatMessage->is_user ? 'badge-primary' : 'badge-secondary' }}">
+                                        {{ $chatMessage->is_user ? 'Người dùng' : 'Bot' }}
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label><strong>Session ID:</strong></label>
+                                <p>{{ $chatMessage->session_id ?: 'N/A' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label><strong>Thời gian:</strong></label>
+                                <p>{{ $chatMessage->created_at->format('d/m/Y H:i:s') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Tin nhắn:</strong></label>
+                        <div class="border p-3 bg-light">
+                            {{ $chatMessage->message }}
+                        </div>
+                    </div>
+                    <a href="{{ route('admin.chat_messages.index') }}" class="btn btn-secondary">Quay lại</a>
                 </div>
             </div>
         </div>

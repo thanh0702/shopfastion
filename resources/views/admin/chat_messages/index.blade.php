@@ -6,8 +6,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Quản lý tin nhắn chat</h3>
-                    <a href="{{ route('admin.chat_messages.create') }}" class="btn btn-primary float-right">Thêm tin nhắn</a>
+                    <h3 class="card-title">Tin nhắn chat từ khách hàng</h3>
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered table-striped">
@@ -19,7 +18,7 @@
                                 <th>Loại</th>
                                 <th>Session ID</th>
                                 <th>Thời gian</th>
-                                <th>Hành động</th>
+                                <th>Chi tiết</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -36,12 +35,7 @@
                                 <td>{{ $message->session_id ?: 'N/A' }}</td>
                                 <td>{{ $message->created_at->format('d/m/Y H:i') }}</td>
                                 <td>
-                                    <a href="{{ route('admin.chat_messages.edit', $message) }}" class="btn btn-sm btn-warning">Sửa</a>
-                                    <form action="{{ route('admin.chat_messages.delete', $message) }}" method="POST" style="display: inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</button>
-                                    </form>
+                                    <a href="{{ route('admin.chat_messages.edit', $message) }}" class="btn btn-sm btn-info">Xem</a>
                                 </td>
                             </tr>
                             @endforeach

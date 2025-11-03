@@ -174,6 +174,13 @@
                 </a>
             </li>
 
+            <!-- Chat Messages -->
+            <li class="{{ request()->routeIs('admin.chat_messages.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.chat_messages.index') }}">
+                    <span><i class="bi bi-chat-dots"></i> Chat Messages</span>
+                </a>
+            </li>
+
             <!-- Logout -->
             <li>
                 <a href="{{ route('logout') }}"

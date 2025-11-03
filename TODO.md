@@ -8,4 +8,4 @@
 - [x] Create admin views for chat_messages (index, create, edit)
 - [x] Modify chatbot JS to save user messages to database
 - [x] Add route and controller method for saving chat messages
-- [ ] Test the chatbot functionality and admin management
+- [ ] Test the chatbot functionality and admin management (view only)
