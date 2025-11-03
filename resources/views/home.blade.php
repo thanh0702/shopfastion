@@ -376,6 +376,26 @@
                     const response = getBotResponse(message);
                     setTimeout(() => addMessage(response, 'bot'), 500);
                     chatbotInput.value = '';
+
+                    // Save user message to database
+                    fetch('/chat/save', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify({
+                            message: message,
+                            session_id: 'chatbot_session_' + Date.now()
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.success) {
+                            console.error('Failed to save chat message');
+                        }
+                    })
+                    .catch(error => console.error('Error saving chat message:', error));
                 }
             }
 

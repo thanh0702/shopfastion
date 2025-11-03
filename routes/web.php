@@ -47,6 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/account/orders/{order}', [App\Http\Controllers\HomeController::class, 'cancelOrder'])->name('account.order.cancel');
     Route::get('/checkout', [App\Http\Controllers\HomeController::class, 'checkout'])->name('checkout');
     Route::post('/payment', [App\Http\Controllers\HomeController::class, 'processPayment'])->name('payment.process');
+    Route::post('/chat/save', [App\Http\Controllers\HomeController::class, 'saveChatMessage'])->name('chat.save');
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
@@ -89,4 +90,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/orders', [App\Http\Controllers\AdminController::class, 'indexOrders'])->name('admin.orders.index');
     Route::get('/admin/orders/{order}', [App\Http\Controllers\AdminController::class, 'showOrder'])->name('admin.orders.show');
     Route::put('/admin/orders/{order}', [App\Http\Controllers\AdminController::class, 'updateOrder'])->name('admin.orders.update');
+
+    // Chat Message management
+    Route::get('/admin/chat_messages', [App\Http\Controllers\AdminController::class, 'indexChatMessages'])->name('admin.chat_messages.index');
+    Route::get('/admin/chat_messages/create', [App\Http\Controllers\AdminController::class, 'createChatMessage'])->name('admin.chat_messages.create');
+    Route::post('/admin/chat_messages', [App\Http\Controllers\AdminController::class, 'storeChatMessage'])->name('admin.chat_messages.store');
+    Route::get('/admin/chat_messages/{chatMessage}/edit', [App\Http\Controllers\AdminController::class, 'editChatMessage'])->name('admin.chat_messages.edit');
+    Route::put('/admin/chat_messages/{chatMessage}', [App\Http\Controllers\AdminController::class, 'updateChatMessage'])->name('admin.chat_messages.update');
+    Route::delete('/admin/chat_messages/{chatMessage}', [App\Http\Controllers\AdminController::class, 'deleteChatMessage'])->name('admin.chat_messages.delete');
 });

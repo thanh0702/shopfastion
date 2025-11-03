@@ -13,6 +13,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\QrCode;
 use App\Models\ReceiptQr;
+use App\Models\ChatMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Cloudinary\Api\Upload\UploadApi;
@@ -501,5 +502,22 @@ class HomeController extends Controller
         $cart->delete();
 
         return redirect()->route('account')->with('success', 'Đơn hàng đã được đặt thành công.');
+    }
+
+    public function saveChatMessage(Request $request)
+    {
+        $request->validate([
+            'message' => 'required|string',
+            'session_id' => 'nullable|string',
+        ]);
+
+        ChatMessage::create([
+            'user_id' => auth()->id(),
+            'message' => $request->message,
+            'is_user' => true,
+            'session_id' => $request->session_id ?: session()->getId(),
+        ]);
+
+        return response()->json(['success' => true]);
     }
 }

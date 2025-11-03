@@ -6,6 +6,7 @@ use App\Models\Banner;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\QrCode;
+use App\Models\ChatMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Cloudinary\Api\Upload\UploadApi;
@@ -456,6 +457,64 @@ class AdminController extends Controller
     {
         $qrCode->delete();
         return redirect()->route('admin.qr_codes.index')->with('success', 'QR Code deleted successfully!');
+    }
+
+    // Chat Message management methods
+    public function indexChatMessages()
+    {
+        $chatMessages = ChatMessage::with('user')->orderBy('created_at', 'desc')->get();
+        return view('admin.chat_messages.index', compact('chatMessages'));
+    }
+
+    public function createChatMessage()
+    {
+        return view('admin.chat_messages.create');
+    }
+
+    public function storeChatMessage(Request $request)
+    {
+        $request->validate([
+            'message' => 'required|string',
+            'is_user' => 'boolean',
+            'session_id' => 'nullable|string',
+        ]);
+
+        ChatMessage::create([
+            'user_id' => auth()->id(),
+            'message' => $request->message,
+            'is_user' => $request->is_user ?? true,
+            'session_id' => $request->session_id,
+        ]);
+
+        return redirect()->route('admin.chat_messages.index')->with('success', 'Chat message created successfully!');
+    }
+
+    public function editChatMessage(ChatMessage $chatMessage)
+    {
+        return view('admin.chat_messages.edit', compact('chatMessage'));
+    }
+
+    public function updateChatMessage(Request $request, ChatMessage $chatMessage)
+    {
+        $request->validate([
+            'message' => 'required|string',
+            'is_user' => 'boolean',
+            'session_id' => 'nullable|string',
+        ]);
+
+        $chatMessage->update([
+            'message' => $request->message,
+            'is_user' => $request->is_user ?? true,
+            'session_id' => $request->session_id,
+        ]);
+
+        return redirect()->route('admin.chat_messages.index')->with('success', 'Chat message updated successfully!');
+    }
+
+    public function deleteChatMessage(ChatMessage $chatMessage)
+    {
+        $chatMessage->delete();
+        return redirect()->route('admin.chat_messages.index')->with('success', 'Chat message deleted successfully!');
     }
 
     public function dashboard()
