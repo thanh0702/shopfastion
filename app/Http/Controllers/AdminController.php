@@ -39,7 +39,22 @@ class AdminController extends Controller
             'status' => 'required|string|in:pending,processing,shipping,completed,cancelled,refunded',
         ]);
 
-        $order->status = $request->input('status');
+        $newStatus = $request->input('status');
+        $oldStatus = $order->status;
+
+        // If status is being changed to completed, reduce product stock
+        if ($newStatus === \App\Models\Order::STATUS_COMPLETED && $oldStatus !== \App\Models\Order::STATUS_COMPLETED) {
+            $order->load('orderItems.product');
+            foreach ($order->orderItems as $item) {
+                $product = $item->product;
+                if ($product) {
+                    $product->stock_quantity = max(0, $product->stock_quantity - $item->quantity);
+                    $product->save();
+                }
+            }
+        }
+
+        $order->status = $newStatus;
         $order->save();
 
         return redirect()->route('admin.orders.show', $order)->with('success', 'Order status updated successfully.');

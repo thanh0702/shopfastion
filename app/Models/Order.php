@@ -14,6 +14,7 @@ class Order extends Model
     const STATUS_PENDING = 'pending';
     const STATUS_PROCESSING = 'processing';
     const STATUS_SHIPPING = 'shipping';
+    const STATUS_COMPLETED = 'completed';
     const STATUS_DELIVERED = 'delivered';
     const STATUS_CANCELLED = 'cancelled';
     const STATUS_REFUNDED = 'refunded';
@@ -32,6 +33,7 @@ class Order extends Model
             self::STATUS_PENDING => 'Pending',
             self::STATUS_PROCESSING => 'Processing',
             self::STATUS_SHIPPING => 'Shipping',
+            self::STATUS_COMPLETED => 'Completed',
             self::STATUS_DELIVERED => 'Delivered',
             self::STATUS_CANCELLED => 'Cancelled',
             self::STATUS_REFUNDED => 'Refunded',
