@@ -115,11 +115,14 @@
                         <div class="my-4 text-center">
                             <h5>Thông tin chuyển khoản</h5>
                             @php
-                                $qrContent = 'Mã đơn hàng: ' . $order->id . ' - Số tiền: ' . number_format($order->total_amount, 2, ',', '.') . ' VND';
-                                $qrUrl = "https://img.vietqr.io/image/BIDV-2601663447-print.png";
+                                $qrContent = 'Mã đơn hàng: ' . $order->id;
+                                $amount = intval($order->total_amount);
+                                $bankCode = 'BIDV';
+                                $accountNumber = '2601663447';
+                                $qrUrl = "https://img.vietqr.io/image/{$bankCode}-{$accountNumber}.png?amount={$amount}&addInfo=" . urlencode($qrContent);
                             @endphp
                             <img src="{{ $qrUrl }}" alt="VietQR" style="max-width: 200px;">
-                            <p><strong>Nội dung chuyển khoản:</strong> {{ $qrContent }}</p>
+                            <p><strong>Nội dung chuyển khoản:</strong> {{ $qrContent }} - Số tiền: {{ number_format($order->total_amount, 0, ',', '.') }} VND</p>
                         </div>
 
                         <form action="{{ route('account.order.saveReceipt', $order) }}" method="POST" enctype="multipart/form-data" class="mb-3">
