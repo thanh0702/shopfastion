@@ -181,6 +181,22 @@
                 </a>
             </li>
 
+            <!-- Admin Management -->
+            <li class="{{ request()->routeIs('admin.admins.*') ? 'active' : '' }}">
+                <a href="#" onclick="event.preventDefault(); toggleSubmenu('admin-submenu', this)">
+                    <span><i class="bi bi-person-badge"></i> Admins</span>
+                    <i class="bi bi-chevron-down arrow"></i>
+                </a>
+                <ul id="admin-submenu" class="submenu d-none">
+                    <li class="{{ request()->routeIs('admin.admins.create') ? 'active' : '' }}">
+                        <a href="{{ route('admin.admins.create') }}">Add Admin</a>
+                    </li>
+                    <li class="{{ request()->routeIs('admin.admins.index') ? 'active' : '' }}">
+                        <a href="{{ route('admin.admins.index') }}">Admin List</a>
+                    </li>
+                </ul>
+            </li>
+
             <!-- Logout -->
             <li>
                 <a href="{{ route('logout') }}"

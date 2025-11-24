@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AdminUserController;
 use Illuminate\Support\Facades\Route;
 Route::get('/test-mongo', function () {
     try {
@@ -59,6 +60,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/categories', [App\Http\Controllers\AdminController::class, 'indexCategories'])->name('admin.categories.index');
     Route::get('/admin/categories/create', [App\Http\Controllers\AdminController::class, 'createCategory'])->name('admin.categories.create');
     Route::post('/admin/categories', [App\Http\Controllers\AdminController::class, 'storeCategory'])->name('admin.categories.store');
+
+    // Admin user management
+    Route::get('/admin/admins', [AdminUserController::class, 'index'])->name('admin.admins.index');
+    Route::get('/admin/admins/create', [AdminUserController::class, 'create'])->name('admin.admins.create');
+    Route::post('/admin/admins', [AdminUserController::class, 'store'])->name('admin.admins.store');
+    Route::delete('/admin/admins/{admin}', [AdminUserController::class, 'destroy'])->name('admin.admins.destroy');
 
     Route::get('/admin/categories/{category}/edit', [App\Http\Controllers\AdminController::class, 'editCategory'])->name('admin.categories.edit');
     Route::put('/admin/categories/{category}', [App\Http\Controllers\AdminController::class, 'updateCategory'])->name('admin.categories.update');
