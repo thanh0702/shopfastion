@@ -21,7 +21,7 @@ class RegisterController extends Controller
 $request->validate([
     'name' => ['required', 'string', 'max:255'],
     'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-    'mobile' => ['required', 'string', 'max:255', 'unique:users,mobile'],
+    'mobile' => ['required', 'string', 'max:12', 'regex:/^\d+$/', 'unique:users,mobile'],
     'password' => ['required', 'confirmed', Rules\Password::defaults()],
 ]);
 
