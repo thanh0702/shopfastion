@@ -501,7 +501,44 @@ class HomeController extends Controller
         $cart->items()->delete();
         $cart->delete();
 
-        return redirect()->route('account')->with('success', 'Đơn hàng đã được đặt thành công.');
+        return redirect()->route('account.order.details', $order)->with('success', 'Đơn hàng đã được đặt thành công.');
+    }
+
+    public function saveReceipt(Request $request, Order $order)
+    {
+        // Ensure order belongs to authenticated user
+        if ($order->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $request->validate([
+            'receipt_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        try {
+            \Cloudinary\Configuration\Configuration::instance()->cloud->cloudName = config('services.cloudinary.cloud_name');
+            \Cloudinary\Configuration\Configuration::instance()->cloud->apiKey = config('services.cloudinary.api_key');
+            \Cloudinary\Configuration\Configuration::instance()->cloud->apiSecret = config('services.cloudinary.api_secret');
+
+            $uploadApi = new \Cloudinary\Api\Upload\UploadApi();
+            $uploadResult = $uploadApi->upload($request->file('receipt_image')->getRealPath(), [
+                'folder' => 'receipts'
+            ]);
+            $imageUrl = $uploadResult['secure_url'];
+
+            \App\Models\ReceiptQr::updateOrCreate(
+                ['order_id' => $order->id],
+                [
+                    'user_id' => auth()->id(),
+                    'image' => $imageUrl,
+                ]
+            );
+        } catch (\Exception $e) {
+            \Log::error('Receipt image upload failed: ' . $e->getMessage());
+            return back()->with('error', 'Tải lên biên lai thất bại. Vui lòng thử lại.');
+        }
+
+        return back()->with('success', 'Biên lai đã được tải lên thành công.');
     }
 
     public function saveChatMessage(Request $request)

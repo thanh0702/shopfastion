@@ -110,6 +110,27 @@
                         </p>
                         <p><strong>Payment Method:</strong> {{ ucfirst($order->payment_method) }}</p>
                         <p><strong>Total Amount:</strong> ${{ number_format($order->total_amount, 2) }}</p>
+
+                        @if($order->payment_method === 'transfer')
+                        <div class="my-4 text-center">
+                            <h5>Thông tin chuyển khoản</h5>
+                            @php
+                                $qrContent = 'Mã đơn hàng: ' . $order->id . ' - Số tiền: ' . number_format($order->total_amount, 2, ',', '.') . ' VND';
+                                $qrUrl = "https://img.vietqr.io/image/BIDV-2601663447-print.png";
+                            @endphp
+                            <img src="{{ $qrUrl }}" alt="VietQR" style="max-width: 200px;">
+                            <p><strong>Nội dung chuyển khoản:</strong> {{ $qrContent }}</p>
+                        </div>
+
+                        <form action="{{ route('account.order.saveReceipt', $order) }}" method="POST" enctype="multipart/form-data" class="mb-3">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="receipt_image" class="form-label">Tải lên biên lai thanh toán</label>
+                                <input type="file" class="form-control" id="receipt_image" name="receipt_image" accept="image/*" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Gửi biên lai</button>
+                        </form>
+                        @endif
                     </div>
                     <div class="col-md-6">
                         <h5>Shipping Address</h5>

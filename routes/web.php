@@ -48,6 +48,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout', [App\Http\Controllers\HomeController::class, 'checkout'])->name('checkout');
     Route::post('/payment', [App\Http\Controllers\HomeController::class, 'processPayment'])->name('payment.process');
     Route::post('/chat/save', [App\Http\Controllers\HomeController::class, 'saveChatMessage'])->name('chat.save');
+
+    Route::post('/account/orders/{order}/receipt', [App\Http\Controllers\HomeController::class, 'saveReceipt'])->name('account.order.saveReceipt');
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {

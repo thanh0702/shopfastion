@@ -97,24 +97,6 @@
                 </div>
             </div>
 
-            <!-- QR Code Section (hidden by default) -->
-            <div class="card mb-4" id="qr-section" style="display: none;">
-                <div class="card-header">
-                    <h5>Thông tin chuyển khoản</h5>
-                </div>
-                <div class="card-body text-center">
-                    @if($qrCode && $qrCode->image)
-                    <img src="{{ $qrCode->image }}" alt="QR Code" class="img-fluid mb-3" style="max-width: 200px;">
-                    <p><strong>Nội dung:</strong> <span id="qr-content">{{ $qrCode->content }}</span></p>
-                    <button type="button" class="btn btn-outline-primary" onclick="copyContent()">Sao chép nội dung</button>
-                    @endif
-                    <div class="mt-3">
-                        <label for="receipt_image" class="form-label">Tải lên biên lai thanh toán</label>
-                        <input type="file" class="form-control" id="receipt_image" name="receipt_image" accept="image/*">
-                    </div>
-                </div>
-            </div>
-
             <div class="text-center">
                 <button type="submit" class="btn btn-success btn-lg">Đặt hàng</button>
                 <a href="{{ route('cart.show') }}" class="btn btn-secondary btn-lg ms-2">Quay lại giỏ hàng</a>
@@ -123,26 +105,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Show/hide QR section based on payment method
-        document.querySelectorAll('input[name="payment_method"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                const qrSection = document.getElementById('qr-section');
-                if (this.value === 'transfer') {
-                    qrSection.style.display = 'block';
-                } else {
-                    qrSection.style.display = 'none';
-                }
-            });
-        });
-
-        function copyContent() {
-            const content = document.getElementById('qr-content').textContent;
-            navigator.clipboard.writeText(content).then(() => {
-                alert('Nội dung đã được sao chép!');
-            });
-        }
-    </script>
      @include('partials.footer')
 </body>
 </html>
