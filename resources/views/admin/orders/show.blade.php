@@ -51,11 +51,15 @@
             <div class="card-body">
                 @foreach($order->orderItems as $item)
                     <div class="d-flex align-items-center mb-3">
-                        @if ($item->product->image_url)
-                        <img src="{{ $item->product->image_url }}" alt="{{ $item->product->name }}" style="width: 60px; height: 60px; object-fit: cover; margin-right: 15px;">
-                        @else
-                        <div style="width: 60px; height: 60px; background: #f8f9fa; display: flex; align-items: center; justify-content: center; margin-right: 15px;">No Image</div>
-                        @endif
+                        @if ($item->product->images && is_array($item->product->images) && count($item->product->images) > 0)
+                    <img src="{{ $item->product->images[0] }}" alt="{{ $item->product->name }}" class="product-image">
+                    @elseif ($item->product->image_url)
+                    <img src="{{ $item->product->image_url }}" alt="{{ $item->product->name }}" class="product-image">
+                    @else
+                    <div class="product-image bg-light d-flex align-items-center justify-content-center">
+                        No Image
+                    </div>
+                    @endif
                         <div>
                             <h6>{{ $item->product->name }}</h6>
                             <p class="mb-0">Số lượng: {{ $item->quantity }} | Giá: ${{ number_format($item->price, 2) }}</p>
