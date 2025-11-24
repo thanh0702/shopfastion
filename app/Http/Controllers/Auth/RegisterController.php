@@ -30,6 +30,7 @@ $user = User::create([
     'email' => $request->email,
     'mobile' => $request->mobile,
     'password' => Hash::make($request->password),
+    'is_admin' => 0,
 ]);
 
         Auth::login($user);
