@@ -119,7 +119,7 @@
                                 $amount = intval($order->total_amount);
                                 $bankCode = 'BIDV';
                                 $accountNumber = '2601663447';
-                                $qrUrl = "https://img.vietqr.io/image/{$bankCode}-{$accountNumber}.png?amount={$amount}&addInfo=" . urlencode($qrContent);
+                                $qrUrl = "https://img.vietqr.io/image/{$bankCode}-{$accountNumber}-print.png?amount={$amount}&addInfo=" . urlencode($qrContent);
                             @endphp
                             <img src="{{ $qrUrl }}" alt="VietQR" style="max-width: 200px;">
                             <p><strong>Nội dung chuyển khoản:</strong> {{ $qrContent }} - Số tiền: {{ number_format($order->total_amount, 0, ',', '.') }} VND</p>
