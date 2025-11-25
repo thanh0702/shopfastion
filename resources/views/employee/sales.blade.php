@@ -17,6 +17,10 @@
                         <span class="visually-hidden">items in cart</span>
                     </span>
                 </a>
+
+                <a href="{{ route('employee.orders') }}" class="btn btn-info position-relative mb-3" style="width: 100%; font-weight: bold;">
+                    <i class="bi bi-receipt"></i> Đơn hàng của tôi
+                </a>
             </div>
 
             <!-- Category List -->
