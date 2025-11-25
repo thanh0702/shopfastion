@@ -92,7 +92,6 @@
                         <label for="status" class="form-label">Trạng thái</label>
                         <select class="form-select" id="status" name="status" required>
                             <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                            <option value="processing" {{ $order->status == 'processing' ? 'selected' : '' }}>Processing</option>
                             <option value="active" {{ $order->status == 'active' ? 'selected' : '' }}>Active</option>
                             <option value="shipping" {{ $order->status == 'shipping' ? 'selected' : '' }}>Shipping</option>
                             <option value="completed" {{ $order->status == 'completed' ? 'selected' : '' }}>Completed</option>

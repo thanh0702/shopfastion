@@ -36,7 +36,7 @@ class AdminController extends Controller
     public function updateOrder(\Illuminate\Http\Request $request, \App\Models\Order $order)
     {
         $request->validate([
-            'status' => 'required|string|in:pending,processing,active,shipping,completed,cancelled,refunded',
+            'status' => 'required|string|in:pending,active,shipping,completed,cancelled,refunded',
         ]);
 
         $newStatus = $request->input('status');

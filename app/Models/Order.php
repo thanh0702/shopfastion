@@ -12,11 +12,9 @@ class Order extends Model
     protected $connection = 'mongodb';
 
     const STATUS_PENDING = 'pending';
-    const STATUS_PROCESSING = 'processing';
     const STATUS_ACTIVE = 'active';
     const STATUS_SHIPPING = 'shipping';
     const STATUS_COMPLETED = 'completed';
-    const STATUS_DELIVERED = 'delivered';
     const STATUS_CANCELLED = 'cancelled';
     const STATUS_REFUNDED = 'refunded';
 
@@ -32,11 +30,9 @@ class Order extends Model
     {
         return [
             self::STATUS_PENDING => 'Pending',
-            self::STATUS_PROCESSING => 'Processing',
             self::STATUS_ACTIVE => 'Active',
             self::STATUS_SHIPPING => 'Shipping',
             self::STATUS_COMPLETED => 'Completed',
-            self::STATUS_DELIVERED => 'Delivered',
             self::STATUS_CANCELLED => 'Cancelled',
             self::STATUS_REFUNDED => 'Refunded',
         ];
