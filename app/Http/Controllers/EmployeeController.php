@@ -175,4 +175,63 @@ class EmployeeController extends Controller
             ], 500);
         }
     }
+
+    // Process employee payment
+    public function processEmployeePayment(Request $request)
+    {
+        $request->validate([
+            'payment_method' => 'required|in:cash,transfer',
+        ]);
+
+        $user = Auth::user();
+        $cart = $this->getEmployeeCart();
+        $cart->load('items.product');
+
+        if ($cart->items->isEmpty()) {
+            return redirect()->route('employee.cart')->with('error', 'Giỏ hàng đang trống.');
+        }
+
+        // Calculate total
+        $total = $cart->items->reduce(function ($carry, $item) {
+            return $carry + (($item->product->price ?? 0) * $item->quantity);
+        }, 0);
+
+        // Create order
+        $order = \App\Models\Order::create([
+            'user_id' => $user->id,
+            'total_amount' => $total,
+            'status' => 'pending',
+            'shipping_address' => 'Mua tại cửa hàng - Nhân viên: ' . $user->name,
+            'payment_method' => $request->payment_method,
+        ]);
+
+        // Create order items
+        foreach ($cart->items as $item) {
+            \App\Models\OrderItem::create([
+                'order_id' => $order->_id,
+                'product_id' => $item->product_id,
+                'quantity' => $item->quantity,
+                'price' => $item->product->price ?? 0,
+                'size' => $item->size ?? null,
+            ]);
+        }
+
+        // Clear cart
+        $cart->items()->delete();
+
+        return redirect()->route('employee.order.details', $order->_id)->with('success', 'Đơn hàng đã được tạo thành công.');
+    }
+
+    // Show employee order details
+    public function orderDetails($orderId)
+    {
+        $order = \App\Models\Order::with('orderItems.product')->findOrFail($orderId);
+
+        // Ensure the order belongs to the authenticated employee
+        if ($order->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized access to order.');
+        }
+
+        return view('employee.order_details', compact('order'));
+    }
 }

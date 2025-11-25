@@ -62,20 +62,34 @@
     </table>
     @endif
 
+    @if(!$cart->items->isEmpty())
+    <h5 class="mt-4">Chọn hình thức thanh toán</h5>
+    <form action="{{ route('employee.payment.process') }}" method="POST" class="mb-4">
+        @csrf
+        <div class="form-check mb-3">
+            <input class="form-check-input" type="radio" name="payment_method" id="payment_transfer" value="transfer" checked>
+            <label class="form-check-label" for="payment_transfer">
+                <strong>Chuyển khoản</strong>
+            </label>
+        </div>
+        <div class="form-check mb-3">
+            <input class="form-check-input" type="radio" name="payment_method" id="payment_cash" value="cash">
+            <label class="form-check-label" for="payment_cash">
+                <strong>Trả bằng tiền mặt</strong>
+            </label>
+        </div>
+        
+        <div class="mt-4">
+            <button type="submit" class="btn btn-success btn-lg">
+                <i class="bi bi-credit-card"></i> Thanh toán đơn hàng
+            </button>
+            <a href="{{ route('employee.sales') }}" class="btn btn-secondary btn-lg ms-2">Quay lại trang bán hàng</a>
+        </div>
+    </form>
+    @else
     <a href="{{ route('employee.sales') }}" class="btn btn-secondary">Quay lại trang bán hàng</a>
+    @endif
 </div>
-
-<h5 class="mt-4">Chọn hình thức thanh toán</h5>
-<form id="payment-form" class="mb-4">
-    <div class="form-check">
-        <input class="form-check-input" type="radio" name="payment_method" id="payment_transfer" value="transfer" checked>
-        <label class="form-check-label" for="payment_transfer">Chuyển khoản</label>
-    </div>
-    <div class="form-check">
-        <input class="form-check-input" type="radio" name="payment_method" id="payment_cash" value="cash">
-        <label class="form-check-label" for="payment_cash">Trả bằng tiền mặt</label>
-    </div>
-</form>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
