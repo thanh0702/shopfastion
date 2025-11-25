@@ -58,41 +58,48 @@ class EmployeeController extends Controller
     // Add product to employee cart via ajax
     public function addToCart(Request $request)
     {
-        $request->validate([
-            'product_id' => 'required|exists:products,_id',
-            'quantity' => 'sometimes|integer|min:1',
-            'size' => 'sometimes|string|nullable',
-        ]);
-
-        $cart = $this->getEmployeeCart();
-
-        $quantity = $request->input('quantity', 1);
-        $productId = $request->product_id;
-        $size = $request->input('size', null);
-
-        // Check if item exists in cart already with same product and size
-        $cartItem = CartItem::where('cart_id', $cart->_id)
-            ->where('product_id', $productId)
-            ->where('size', $size)
-            ->first();
-
-        if ($cartItem) {
-            $cartItem->quantity += $quantity;
-            $cartItem->save();
-        } else {
-            $cartItem = new CartItem([
-                'product_id' => $productId,
-                'quantity' => $quantity,
-                'size' => $size,
+        try {
+            $request->validate([
+                'product_id' => 'required|exists:products,_id',
+                'quantity' => 'sometimes|integer|min:1',
+                'size' => 'sometimes|string|nullable',
             ]);
-            $cart->items()->save($cartItem);
-        }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Product added to cart',
-            'cartCount' => $this->getEmployeeCart()->items()->sum('quantity')
-        ]);
+            $cart = $this->getEmployeeCart();
+
+            $quantity = $request->input('quantity', 1);
+            $productId = $request->product_id;
+            $size = $request->input('size', null);
+
+            // Check if item exists in cart already with same product and size
+            $cartItem = CartItem::where('cart_id', $cart->_id)
+                ->where('product_id', $productId)
+                ->where('size', $size)
+                ->first();
+
+            if ($cartItem) {
+                $cartItem->quantity += $quantity;
+                $cartItem->save();
+            } else {
+                $cartItem = new CartItem([
+                    'product_id' => $productId,
+                    'quantity' => $quantity,
+                    'size' => $size,
+                ]);
+                $cart->items()->save($cartItem);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Product added to cart',
+                'cartCount' => $this->getEmployeeCart()->items()->sum('quantity')
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Exception: '.$e->getMessage(),
+            ], 500);
+        }
     }
 
     // Get cart item count for ajax badge update
