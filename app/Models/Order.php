@@ -13,6 +13,7 @@ class Order extends Model
 
     const STATUS_PENDING = 'pending';
     const STATUS_PROCESSING = 'processing';
+    const STATUS_ACTIVE = 'active';
     const STATUS_SHIPPING = 'shipping';
     const STATUS_COMPLETED = 'completed';
     const STATUS_DELIVERED = 'delivered';
@@ -32,6 +33,7 @@ class Order extends Model
         return [
             self::STATUS_PENDING => 'Pending',
             self::STATUS_PROCESSING => 'Processing',
+            self::STATUS_ACTIVE => 'Active',
             self::STATUS_SHIPPING => 'Shipping',
             self::STATUS_COMPLETED => 'Completed',
             self::STATUS_DELIVERED => 'Delivered',

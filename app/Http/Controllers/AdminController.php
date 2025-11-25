@@ -36,19 +36,34 @@ class AdminController extends Controller
     public function updateOrder(\Illuminate\Http\Request $request, \App\Models\Order $order)
     {
         $request->validate([
-            'status' => 'required|string|in:pending,processing,shipping,completed,cancelled,refunded',
+            'status' => 'required|string|in:pending,processing,active,shipping,completed,cancelled,refunded',
         ]);
 
         $newStatus = $request->input('status');
         $oldStatus = $order->status;
 
-        // If status is being changed to completed, reduce product stock
-        if ($newStatus === \App\Models\Order::STATUS_COMPLETED && $oldStatus !== \App\Models\Order::STATUS_COMPLETED) {
-            $order->load('orderItems.product');
+        $order->load('orderItems.product');
+
+        // If status is being changed to active, reduce product stock
+        if ($newStatus === \App\Models\Order::STATUS_ACTIVE && $oldStatus !== \App\Models\Order::STATUS_ACTIVE) {
             foreach ($order->orderItems as $item) {
                 $product = $item->product;
                 if ($product) {
                     $product->stock_quantity = max(0, $product->stock_quantity - $item->quantity);
+                    $product->save();
+                }
+            }
+        }
+
+        // If status changes to cancelled or refunded and was not cancelled or refunded before, increase stock quantity
+        if (
+            in_array($newStatus, [\App\Models\Order::STATUS_CANCELLED, \App\Models\Order::STATUS_REFUNDED]) &&
+            !in_array($oldStatus, [\App\Models\Order::STATUS_CANCELLED, \App\Models\Order::STATUS_REFUNDED])
+        ) {
+            foreach ($order->orderItems as $item) {
+                $product = $item->product;
+                if ($product) {
+                    $product->stock_quantity += $item->quantity;
                     $product->save();
                 }
             }
