@@ -65,6 +65,18 @@
     <a href="{{ route('employee.sales') }}" class="btn btn-secondary">Quay lại trang bán hàng</a>
 </div>
 
+<h5 class="mt-4">Chọn hình thức thanh toán</h5>
+<form id="payment-form" class="mb-4">
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="payment_method" id="payment_transfer" value="transfer" checked>
+        <label class="form-check-label" for="payment_transfer">Chuyển khoản</label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="payment_method" id="payment_cash" value="cash">
+        <label class="form-check-label" for="payment_cash">Trả bằng tiền mặt</label>
+    </div>
+</form>
+
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 
