@@ -61,6 +61,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/employee/cart', [EmployeeController::class, 'cartPage'])->name('employee.cart');
         Route::post('/employee/cart/add', [EmployeeController::class, 'addToCart'])->name('employee.cart.add');
         Route::get('/employee/cart/count', [EmployeeController::class, 'getCartCount'])->name('employee.cart.count');
+        Route::post('/employee/cart/update', [EmployeeController::class, 'updateCartItem'])->name('employee.cart.update');
+        Route::post('/employee/cart/delete', [EmployeeController::class, 'deleteCartItem'])->name('employee.cart.delete');
     });
 });
 

@@ -109,4 +109,70 @@ class EmployeeController extends Controller
         $count = $cart->items()->sum('quantity');
         return response()->json(['count' => $count]);
     }
+    
+    // Update cart item quantity
+    public function updateCartItem(Request $request)
+    {
+        $request->validate([
+            'cart_item_id' => 'required|string',
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        try {
+            $cart = $this->getEmployeeCart();
+            $cartItem = CartItem::where('cart_id', $cart->_id)
+                ->where('_id', $request->cart_item_id)
+                ->first();
+
+            if (!$cartItem) {
+                return response()->json(['success' => false, 'message' => 'Cart item not found'], 404);
+            }
+
+            $cartItem->quantity = $request->quantity;
+            $cartItem->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Cart item updated',
+                'cartCount' => $this->getEmployeeCart()->items()->sum('quantity'),
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Exception: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    // Delete cart item
+    public function deleteCartItem(Request $request)
+    {
+        $request->validate([
+            'cart_item_id' => 'required|string',
+        ]);
+
+        try {
+            $cart = $this->getEmployeeCart();
+            $cartItem = CartItem::where('cart_id', $cart->_id)
+                ->where('_id', $request->cart_item_id)
+                ->first();
+
+            if (!$cartItem) {
+                return response()->json(['success' => false, 'message' => 'Cart item not found'], 404);
+            }
+
+            $cartItem->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Cart item deleted',
+                'cartCount' => $this->getEmployeeCart()->items()->sum('quantity'),
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Exception: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
 }
