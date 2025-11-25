@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Update cart item quantity via AJAX
     function updateQuantity(cartItemId, newQuantity, row) {
-        fetch("{{ route('employee.cart.update') }}", {
+        fetch("/employee/cart/update", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function deleteCartItem(cartItemId, row) {
         if (!confirm('Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?')) return;
 
-        fetch("{{ route('employee.cart.delete') }}", {
+        fetch("/employee/cart/delete", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
