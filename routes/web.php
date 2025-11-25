@@ -4,7 +4,10 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Middleware\EmployeeMiddleware;
 use Illuminate\Support\Facades\Route;
+
 Route::get('/test-mongo', function () {
     try {
         $client = new MongoDB\Client(env('DB_URI'));
@@ -13,6 +16,7 @@ Route::get('/test-mongo', function () {
         return $e->getMessage();
     }
 });
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/shop', [HomeController::class, 'shop'])->name('shop');
 Route::get('/search', [HomeController::class, 'search'])->name('search');
@@ -49,12 +53,20 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout', [App\Http\Controllers\HomeController::class, 'checkout'])->name('checkout');
     Route::post('/payment', [App\Http\Controllers\HomeController::class, 'processPayment'])->name('payment.process');
     Route::post('/chat/save', [App\Http\Controllers\HomeController::class, 'saveChatMessage'])->name('chat.save');
-
     Route::post('/account/orders/{order}/receipt', [App\Http\Controllers\HomeController::class, 'saveReceipt'])->name('account.order.saveReceipt');
+
+    Route::middleware([EmployeeMiddleware::class])->group(function () {
+        Route::get('/employee/sales', [EmployeeController::class, 'salesPage'])->name('employee.sales');
+    });
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/dashboard', [App\Http\Controllers\AdminController::class, 'dashboard'])->name('admin.dashboard');
+
+    // Employee user management
+    Route::get('/admin/employees', [App\Http\Controllers\AdminEmployeeController::class, 'index'])->name('admin.employees.index');
+    Route::get('/admin/employees/create', [App\Http\Controllers\AdminEmployeeController::class, 'create'])->name('admin.employees.create');
+    Route::post('/admin/employees', [App\Http\Controllers\AdminEmployeeController::class, 'store'])->name('admin.employees.store');
 
     // Category management
     Route::get('/admin/categories', [App\Http\Controllers\AdminController::class, 'indexCategories'])->name('admin.categories.index');

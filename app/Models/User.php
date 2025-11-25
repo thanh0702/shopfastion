@@ -23,6 +23,7 @@ class User extends Authenticatable
         'mobile',
         'password',
         'is_admin',
+        'is_employee',
     ];
 
     /**
@@ -46,7 +47,13 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_admin' => 'boolean',
+            'is_employee' => 'boolean',
         ];
+    }
+
+    public function isEmployee()
+    {
+        return $this->is_employee;
     }
 
     public function carts()

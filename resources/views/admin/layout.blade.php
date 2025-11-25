@@ -197,6 +197,22 @@
                 </ul>
             </li>
 
+            <!-- Employee Management -->
+            <li class="{{ request()->routeIs('admin.employees.*') ? 'active' : '' }}">
+                <a href="#" onclick="event.preventDefault(); toggleSubmenu('employee-submenu', this)">
+                    <span><i class="bi bi-people"></i> Employees</span>
+                    <i class="bi bi-chevron-down arrow"></i>
+                </a>
+                <ul id="employee-submenu" class="submenu d-none">
+                    <li class="{{ request()->routeIs('admin.employees.create') ? 'active' : '' }}">
+                        <a href="{{ route('admin.employees.create') }}">Add Employee</a>
+                    </li>
+                    <li class="{{ request()->routeIs('admin.employees.index') ? 'active' : '' }}">
+                        <a href="{{ route('admin.employees.index') }}">Employee List</a>
+                    </li>
+                </ul>
+            </li>
+
             <!-- Logout -->
             <li>
                 <a href="{{ route('logout') }}"
