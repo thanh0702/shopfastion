@@ -142,7 +142,7 @@
                     event.preventDefault();
                     const productId = this.getAttribute('data-product-id');
 
-                    fetch("{{ route('employee.cart.add') }}", {
+                    fetch("/employee/cart/add", {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
