@@ -59,7 +59,7 @@
                     <li class="nav-item"><a class="nav-link" href="{{ route('admin.dashboard') }}">ADMIN</a></li>
                     @endif
                     @if(Auth::check() && Auth::user()->is_employee)
-                    <li class="nav-item"><a class="nav-link" href="{{ route('employee.sales') }}">NHÂN VIÊN</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('employee.sales') }}">EMPLOYEE</a></li>
                     @endif
                 </ul>
                 <ul class="navbar-nav mb-2 mb-lg-0 d-flex align-items-center">
