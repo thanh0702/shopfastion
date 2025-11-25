@@ -57,6 +57,10 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware([EmployeeMiddleware::class])->group(function () {
         Route::get('/employee/sales', [EmployeeController::class, 'salesPage'])->name('employee.sales');
+
+        Route::get('/employee/cart', [EmployeeController::class, 'cartPage'])->name('employee.cart');
+        Route::post('/employee/cart/add', [EmployeeController::class, 'addToCart'])->name('employee.cart.add');
+        Route::get('/employee/cart/count', [EmployeeController::class, 'getCartCount'])->name('employee.cart.count');
     });
 });
 
