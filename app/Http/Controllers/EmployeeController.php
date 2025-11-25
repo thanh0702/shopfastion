@@ -255,12 +255,12 @@ class EmployeeController extends Controller
             $product = $item->product;
             if ($product) {
                 // Check if enough stock
-                if ($product->stock < $item->quantity) {
+                if ($product->stock_quantity < $item->quantity) {
                     return redirect()->back()->with('error', 'Không đủ số lượng sản phẩm "' . $product->name . '" trong kho.');
                 }
-                
+
                 // Deduct stock
-                $product->stock -= $item->quantity;
+                $product->stock_quantity -= $item->quantity;
                 $product->save();
             }
         }
