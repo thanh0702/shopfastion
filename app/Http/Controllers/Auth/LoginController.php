@@ -25,6 +25,9 @@ class LoginController extends Controller
             $request->session()->regenerate();
 
             $user = Auth::user();
+            if ($user->is_employee) {
+                return redirect()->intended(route('employee.sales'));
+            }
             if ($user->is_admin) {
                 return redirect()->intended(route('admin.dashboard'));
             }
