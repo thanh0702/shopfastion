@@ -234,4 +234,75 @@ class EmployeeController extends Controller
 
         return view('employee.order_details', compact('order'));
     }
+
+    // Complete order and deduct product quantities
+    public function completeOrder($orderId)
+    {
+        $order = \App\Models\Order::with('orderItems.product')->findOrFail($orderId);
+
+        // Ensure the order belongs to the authenticated employee
+        if ($order->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized access to order.');
+        }
+
+        // Only allow completion if order is pending
+        if ($order->status !== 'pending') {
+            return redirect()->back()->with('error', 'Chỉ có thể hoàn thành đơn hàng đang chờ xử lý.');
+        }
+
+        // Deduct product quantities
+        foreach ($order->orderItems as $item) {
+            $product = $item->product;
+            if ($product) {
+                // Check if enough stock
+                if ($product->stock < $item->quantity) {
+                    return redirect()->back()->with('error', 'Không đủ số lượng sản phẩm "' . $product->name . '" trong kho.');
+                }
+                
+                // Deduct stock
+                $product->stock -= $item->quantity;
+                $product->save();
+            }
+        }
+
+        // Update order status
+        $order->status = 'completed';
+        $order->save();
+
+        return redirect()->back()->with('success', 'Đơn hàng đã được hoàn thành và số lượng sản phẩm đã được cập nhật.');
+    }
+
+    // Cancel order
+    public function cancelOrder($orderId)
+    {
+        $order = \App\Models\Order::findOrFail($orderId);
+
+        // Ensure the order belongs to the authenticated employee
+        if ($order->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized access to order.');
+        }
+
+        // Only allow cancellation if order is pending
+        if ($order->status !== 'pending') {
+            return redirect()->back()->with('error', 'Chỉ có thể hủy đơn hàng đang chờ xử lý.');
+        }
+
+        // Update order status
+        $order->status = 'cancelled';
+        $order->save();
+
+        return redirect()->back()->with('success', 'Đơn hàng đã được hủy.');
+    }
+
+    // Show employee orders list
+    public function ordersList()
+    {
+        $user = Auth::user();
+        $orders = \App\Models\Order::where('user_id', $user->id)
+            ->with('orderItems.product')
+            ->latest()
+            ->get();
+
+        return view('employee.orders', compact('orders'));
+    }
 }

@@ -126,6 +126,26 @@
         <a href="{{ route('employee.cart') }}" class="btn btn-secondary">
             <i class="bi bi-cart"></i> Xem giỏ hàng
         </a>
+
+        @if($order->status == 'pending')
+        <div class="d-inline-block ms-3">
+            <form action="{{ route('employee.order.complete', $order->_id) }}" method="POST" class="d-inline" onsubmit="return confirm('Bạn có chắc muốn hoàn thành đơn hàng này? Số lượng sản phẩm sẽ được trừ khỏi kho.')">
+                @csrf
+                @method('PUT')
+                <button type="submit" class="btn btn-success">
+                    <i class="bi bi-check-circle"></i> Hoàn thành đơn hàng
+                </button>
+            </form>
+
+            <form action="{{ route('employee.order.cancel', $order->_id) }}" method="POST" class="d-inline ms-2" onsubmit="return confirm('Bạn có chắc muốn hủy đơn hàng này?')">
+                @csrf
+                @method('PUT')
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-x-circle"></i> Hủy đơn hàng
+                </button>
+            </form>
+        </div>
+        @endif
     </div>
 </div>
 @endsection
