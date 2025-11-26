@@ -213,6 +213,22 @@
                 </ul>
             </li>
 
+            <!-- Supplier Management -->
+            <li class="{{ request()->routeIs('admin.suppliers.*') ? 'active' : '' }}">
+                <a href="#" onclick="event.preventDefault(); toggleSubmenu('supplier-submenu', this)">
+                    <span><i class="bi bi-building"></i> Suppliers</span>
+                    <i class="bi bi-chevron-down arrow"></i>
+                </a>
+                <ul id="supplier-submenu" class="submenu d-none">
+                    <li class="{{ request()->routeIs('admin.suppliers.create') ? 'active' : '' }}">
+                        <a href="{{ route('admin.suppliers.create') }}">Add Supplier</a>
+                    </li>
+                    <li class="{{ request()->routeIs('admin.suppliers.index') ? 'active' : '' }}">
+                        <a href="{{ route('admin.suppliers.index') }}">Supplier List</a>
+                    </li>
+                </ul>
+            </li>
+
             <!-- Logout -->
             <li>
                 <a href="{{ route('logout') }}"

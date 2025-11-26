@@ -1,8 +1,17 @@
-# TODO: Implement HTML Invoice for Employee Order Completion
+## Steps to Complete:
+- [x] Create AdminSupplierController with CRUD methods
+- [x] Add supplier routes to routes/web.php
+- [x] Add Suppliers section to admin sidebar
+- [x] Create supplier index view (list all suppliers)
+- [x] Create supplier create view (add new supplier)
+- [x] Create supplier edit view (edit existing supplier)
+=======
+## TODO: Add Supplier Management to Admin Panel
 
 ## Steps to Complete:
-- [x] Add new route for invoice in routes/web.php
-- [x] Add showInvoice method in EmployeeController.php
-- [x] Create invoice.blade.php view with HTML template for printing
-- [x] Modify completeOrder method to redirect to invoice after completion
-- [x] Update order_details.blade.php to show invoice link for completed orders
+- [x] Create AdminSupplierController with CRUD methods
+- [x] Add supplier routes to routes/web.php
+- [x] Add Suppliers section to admin sidebar
+- [x] Create supplier index view (list all suppliers)
+- [x] Create supplier create view (add new supplier)
+- [x] Create supplier edit view (edit existing supplier)
