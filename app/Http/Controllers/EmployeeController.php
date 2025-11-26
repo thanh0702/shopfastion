@@ -507,4 +507,60 @@ class EmployeeController extends Controller
         $product->delete();
         return redirect()->route('employee.products.index')->with('success', 'Product deleted successfully!');
     }
+
+    // Employee Supplier Management Methods
+    public function indexSuppliers()
+    {
+        $suppliers = Supplier::all();
+        return view('employee.suppliers.index', compact('suppliers'));
+    }
+
+    public function createSupplier()
+    {
+        return view('employee.suppliers.create');
+    }
+
+    public function storeSupplier(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:suppliers,email',
+            'phone' => 'required|string|max:20',
+            'address' => 'required|string',
+            'contact_person' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        Supplier::create($request->all());
+
+        return redirect()->route('employee.suppliers.index')->with('success', 'Supplier created successfully.');
+    }
+
+    public function editSupplier(Supplier $supplier)
+    {
+        return view('employee.suppliers.edit', compact('supplier'));
+    }
+
+    public function updateSupplier(Request $request, Supplier $supplier)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:suppliers,email,' . $supplier->_id,
+            'phone' => 'required|string|max:20',
+            'address' => 'required|string',
+            'contact_person' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        $supplier->update($request->all());
+
+        return redirect()->route('employee.suppliers.index')->with('success', 'Supplier updated successfully.');
+    }
+
+    public function deleteSupplier(Supplier $supplier)
+    {
+        $supplier->delete();
+
+        return redirect()->route('employee.suppliers.index')->with('success', 'Supplier deleted successfully.');
+    }
 }

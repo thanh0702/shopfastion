@@ -29,6 +29,10 @@
                 <a href="{{ route('employee.products.index') }}" class="btn btn-success position-relative mb-3" style="width: 100%; font-weight: bold;">
                     <i class="bi bi-box-seam"></i> Quản lý sản phẩm
                 </a>
+
+                 <a href="{{ route('employee.suppliers.index') }}" class="btn btn-info position-relative mb-3" style="width: 100%; font-weight: bold;">
+                    <i class="bi bi-building"></i> Quản lý nhà cung cấp
+                </a>
             </div>
 
             <!-- Category List -->
