@@ -70,6 +70,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/employee/orders/{order}/complete', [EmployeeController::class, 'completeOrder'])->name('employee.order.complete');
         Route::put('/employee/orders/{order}/cancel', [EmployeeController::class, 'cancelOrder'])->name('employee.order.cancel');
         Route::put('/employee/orders/{order}/status', [EmployeeController::class, 'updateOrderStatus'])->name('employee.orders.update');
+        Route::get('/employee/orders/{order}/invoice', [EmployeeController::class, 'showInvoice'])->name('employee.order.invoice');
         Route::get('/employee/all-orders', [EmployeeController::class, 'allOrders'])->name('employee.all-orders');
         Route::get('/employee/orders/show/{order}', [EmployeeController::class, 'showOrder'])->name('employee.orders.show');
     });

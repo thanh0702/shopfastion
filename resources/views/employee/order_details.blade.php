@@ -145,6 +145,12 @@
                 </button>
             </form>
         </div>
+        @elseif($order->status == 'completed')
+        <div class="d-inline-block ms-3">
+            <a href="{{ route('employee.order.invoice', $order->_id) }}" class="btn btn-primary" target="_blank">
+                <i class="bi bi-printer"></i> Xuất hóa đơn
+            </a>
+        </div>
         @endif
     </div>
 </div>

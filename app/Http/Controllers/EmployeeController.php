@@ -269,7 +269,7 @@ class EmployeeController extends Controller
         $order->status = 'completed';
         $order->save();
 
-        return redirect()->back()->with('success', 'Đơn hàng đã được hoàn thành và số lượng sản phẩm đã được cập nhật.');
+        return redirect()->route('employee.order.invoice', $order->_id)->with('success', 'Đơn hàng đã được hoàn thành và số lượng sản phẩm đã được cập nhật.');
     }
 
     // Cancel order
@@ -292,6 +292,24 @@ class EmployeeController extends Controller
         $order->save();
 
         return redirect()->back()->with('success', 'Đơn hàng đã được hủy.');
+    }
+
+    // Show invoice for completed order
+    public function showInvoice($orderId)
+    {
+        $order = \App\Models\Order::with('orderItems.product')->findOrFail($orderId);
+
+        // Ensure the order belongs to the authenticated employee
+        if ($order->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized access to order.');
+        }
+
+        // Only allow invoice for completed orders
+        if ($order->status !== 'completed') {
+            return redirect()->route('employee.order.details', $order->_id)->with('error', 'Chỉ có thể xuất hóa đơn cho đơn hàng đã hoàn thành.');
+        }
+
+        return view('employee.invoice', compact('order'));
     }
 
     // Show employee orders list
