@@ -21,6 +21,10 @@
                 <a href="{{ route('employee.orders') }}" class="btn btn-info position-relative mb-3" style="width: 100%; font-weight: bold;">
                     <i class="bi bi-receipt"></i> Đơn hàng của tôi
                 </a>
+
+                <a href="{{ route('employee.all-orders') }}" class="btn btn-primary position-relative mb-3" style="width: 100%; font-weight: bold;">
+                    <i class="bi bi-list-ul"></i> Quản lý tất cả đơn hàng
+                </a>
             </div>
 
             <!-- Category List -->
@@ -71,7 +75,7 @@
                                 @endif
 
                                 <!-- Add to Cart Button shown on hover -->
-                                <button class="btn btn-success add-to-cart-btn position-absolute top-50 start-50 translate-middle d-none" 
+                                <button class="btn btn-success add-to-cart-btn position-absolute top-50 start-50 translate-middle d-none"
                                     data-product-id="{{ $product->_id }}" style="opacity: 0.9;">
                                     Thêm vào giỏ hàng
                                 </button>
