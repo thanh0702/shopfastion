@@ -319,4 +319,48 @@ class EmployeeController extends Controller
         $order = \App\Models\Order::with('orderItems.product', 'receiptQrs')->findOrFail($orderId);
         return view('employee.order_show', compact('order'));
     }
+
+    // Update order status for employee management
+    public function updateOrderStatus(Request $request, $orderId)
+    {
+        $request->validate([
+            'status' => 'required|string|in:pending,active,shipping,completed,cancelled,refunded',
+        ]);
+
+        $order = \App\Models\Order::findOrFail($orderId);
+        $newStatus = $request->input('status');
+        $oldStatus = $order->status;
+
+        $order->load('orderItems.product');
+
+        // If status is being changed to active, reduce product stock
+        if ($newStatus === 'active' && $oldStatus !== 'active') {
+            foreach ($order->orderItems as $item) {
+                $product = $item->product;
+                if ($product) {
+                    $product->stock_quantity = max(0, $product->stock_quantity - $item->quantity);
+                    $product->save();
+                }
+            }
+        }
+
+        // If status changes to cancelled or refunded and was not cancelled or refunded before, increase stock quantity
+        if (
+            in_array($newStatus, ['cancelled', 'refunded']) &&
+            !in_array($oldStatus, ['cancelled', 'refunded'])
+        ) {
+            foreach ($order->orderItems as $item) {
+                $product = $item->product;
+                if ($product) {
+                    $product->stock_quantity += $item->quantity;
+                    $product->save();
+                }
+            }
+        }
+
+        $order->status = $newStatus;
+        $order->save();
+
+        return redirect()->route('employee.orders.show', $order)->with('success', 'Trạng thái đơn hàng đã được cập nhật thành công.');
+    }
 }

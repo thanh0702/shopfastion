@@ -135,6 +135,30 @@
                 </div>
             </div>
             @endif
+
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Cập nhật trạng thái</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ route('employee.orders.update', $order) }}">
+                        @csrf
+                        @method('PUT')
+                        <div class="mb-3">
+                            <label for="status" class="form-label">Trạng thái</label>
+                            <select class="form-select" id="status" name="status" required>
+                                <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Chờ xử lý</option>
+                                <option value="active" {{ $order->status == 'active' ? 'selected' : '' }}>Active</option>
+                                <option value="shipping" {{ $order->status == 'shipping' ? 'selected' : '' }}>Đang giao</option>
+                                <option value="completed" {{ $order->status == 'completed' ? 'selected' : '' }}>Hoàn thành</option>
+                                <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>Đã hủy</option>
+                                <option value="refunded" {{ $order->status == 'refunded' ? 'selected' : '' }}>Hoàn tiền</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Cập nhật</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
