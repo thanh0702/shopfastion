@@ -19,7 +19,7 @@
             <thead class="table-dark">
                 <tr>
                     <th>ID</th>
-                    <th>Khách hàng</th>
+                    <th>User ID</th>
                     <th>Tổng tiền</th>
                     <th>Trạng thái</th>
                     <th>Phương thức thanh toán</th>
@@ -31,7 +31,7 @@
                 @foreach($orders as $order)
                 <tr>
                     <td>#{{ $order->_id }}</td>
-                    <td>{{ $order->user->name ?? 'N/A' }}</td>
+                    <td>{{ $order->user_id }}</td>
                     <td class="fw-bold text-danger">{{ number_format($order->total_amount, 0, ',', '.') }} VND</td>
                     <td>
                         <span class="badge

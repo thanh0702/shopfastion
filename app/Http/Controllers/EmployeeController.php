@@ -109,7 +109,7 @@ class EmployeeController extends Controller
         $count = $cart->items()->sum('quantity');
         return response()->json(['count' => $count]);
     }
-    
+
     // Update cart item quantity
     public function updateCartItem(Request $request)
     {
@@ -304,5 +304,19 @@ class EmployeeController extends Controller
             ->get();
 
         return view('employee.orders', compact('orders'));
+    }
+
+    // Show all orders for employee management
+    public function allOrders()
+    {
+        $orders = \App\Models\Order::orderBy('created_at', 'desc')->get();
+        return view('employee.all_orders', compact('orders'));
+    }
+
+    // Show order details for any order (employee management)
+    public function showOrder($orderId)
+    {
+        $order = \App\Models\Order::with('orderItems.product', 'receiptQrs')->findOrFail($orderId);
+        return view('employee.order_show', compact('order'));
     }
 }
