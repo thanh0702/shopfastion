@@ -131,4 +131,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     // Chat Message management
     Route::get('/admin/chat_messages', [App\Http\Controllers\AdminController::class, 'indexChatMessages'])->name('admin.chat_messages.index');
     Route::get('/admin/chat_messages/{chatMessage}/edit', [App\Http\Controllers\AdminController::class, 'editChatMessage'])->name('admin.chat_messages.edit');
+
+    // Supplier management
+    Route::get('/admin/suppliers', [App\Http\Controllers\AdminSupplierController::class, 'index'])->name('admin.suppliers.index');
+    Route::get('/admin/suppliers/create', [App\Http\Controllers\AdminSupplierController::class, 'create'])->name('admin.suppliers.create');
+    Route::post('/admin/suppliers', [App\Http\Controllers\AdminSupplierController::class, 'store'])->name('admin.suppliers.store');
+    Route::get('/admin/suppliers/{supplier}/edit', [App\Http\Controllers\AdminSupplierController::class, 'edit'])->name('admin.suppliers.edit');
+    Route::put('/admin/suppliers/{supplier}', [App\Http\Controllers\AdminSupplierController::class, 'update'])->name('admin.suppliers.update');
+    Route::delete('/admin/suppliers/{supplier}', [App\Http\Controllers\AdminSupplierController::class, 'destroy'])->name('admin.suppliers.destroy');
 });
