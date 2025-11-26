@@ -8,6 +8,9 @@ use App\Models\Category;
 use App\Models\Cart;
 use App\Models\CartItem;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Cloudinary\Configuration;
+use Cloudinary\Api\Upload\UploadApi;
 
 class EmployeeController extends Controller
 {
