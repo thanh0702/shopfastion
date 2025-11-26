@@ -1,4 +1,4 @@
-# TODO - Trang thanh toán cho nhân viên
+# TODO - Thêm trang quản lý đơn hàng hiển thị tất cả đơn hàng cho nhân viên
 
 ## ✅ Hoàn thành
 
@@ -30,6 +30,24 @@
 - [x] Thêm route POST `/employee/payment` cho xử lý thanh toán
 - [x] Thêm route GET `/employee/orders/{order}` cho chi tiết đơn hàng
 
+## 🔄 Đang thực hiện - Thêm trang quản lý đơn hàng hiển thị tất cả đơn hàng
+
+### 6. Thêm methods mới trong EmployeeController
+- [ ] Thêm method `allOrders()` để lấy tất cả đơn hàng với user
+- [ ] Thêm method `showOrder($orderId)` để xem chi tiết đơn hàng bất kỳ
+
+### 7. Thêm routes mới
+- [ ] Thêm route GET `/employee/all-orders` cho danh sách tất cả đơn hàng
+- [ ] Thêm route GET `/employee/orders/show/{order}` cho chi tiết đơn hàng
+
+### 8. Tạo views mới
+- [ ] Tạo `resources/views/employee/all_orders.blade.php` dựa trên admin/orders/index.blade.php
+- [ ] Tạo `resources/views/employee/order_show.blade.php` dựa trên admin/orders/show.blade.php
+
+### 9. Test và điều chỉnh
+- [ ] Test các routes và views mới
+- [ ] Đảm bảo nhân viên truy cập được mà không cần middleware admin
+
 ## 📝 Ghi chú kỹ thuật
 
 ### VietQR Dynamic
@@ -55,3 +73,8 @@
 - ✅ Hiển thị QR code động cho chuyển khoản
 - ✅ Trang chi tiết đơn hàng với đầy đủ thông tin
 - ✅ Bảo mật: chỉ nhân viên tạo đơn mới xem được
+
+## 🎯 Các tính năng mới sẽ triển khai
+
+- 🔄 Trang quản lý đơn hàng hiển thị tất cả đơn hàng cho nhân viên
+- 🔄 Chi tiết đơn hàng bất kỳ cho nhân viên
