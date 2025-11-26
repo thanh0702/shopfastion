@@ -63,7 +63,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/employee/cart/count', [EmployeeController::class, 'getCartCount'])->name('employee.cart.count');
         Route::post('/employee/cart/update', [EmployeeController::class, 'updateCartItem'])->name('employee.cart.update');
         Route::post('/employee/cart/delete', [EmployeeController::class, 'deleteCartItem'])->name('employee.cart.delete');
-        
+
         Route::post('/employee/payment', [EmployeeController::class, 'processEmployeePayment'])->name('employee.payment.process');
         Route::get('/employee/orders', [EmployeeController::class, 'ordersList'])->name('employee.orders');
         Route::get('/employee/orders/{order}', [EmployeeController::class, 'orderDetails'])->name('employee.order.details');
@@ -73,6 +73,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/employee/orders/{order}/invoice', [EmployeeController::class, 'showInvoice'])->name('employee.order.invoice');
         Route::get('/employee/all-orders', [EmployeeController::class, 'allOrders'])->name('employee.all-orders');
         Route::get('/employee/orders/show/{order}', [EmployeeController::class, 'showOrder'])->name('employee.orders.show');
+
+        // Employee Product Management
+        Route::get('/employee/products', [EmployeeController::class, 'indexProducts'])->name('employee.products.index');
+        Route::get('/employee/products/create', [EmployeeController::class, 'createProduct'])->name('employee.products.create');
+        Route::post('/employee/products', [EmployeeController::class, 'storeProduct'])->name('employee.products.store');
+        Route::get('/employee/products/{product}/edit', [EmployeeController::class, 'editProduct'])->name('employee.products.edit');
+        Route::put('/employee/products/{product}', [EmployeeController::class, 'updateProduct'])->name('employee.products.update');
+        Route::delete('/employee/products/{product}', [EmployeeController::class, 'deleteProduct'])->name('employee.products.delete');
     });
 });
 

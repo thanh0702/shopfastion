@@ -381,4 +381,127 @@ class EmployeeController extends Controller
 
         return redirect()->route('employee.orders.show', $order)->with('success', 'Trạng thái đơn hàng đã được cập nhật thành công.');
     }
+
+    // Employee Product Management Methods
+    public function indexProducts()
+    {
+        $products = Product::with('category')->get();
+        return view('employee.products.index', compact('products'));
+    }
+
+    public function createProduct()
+    {
+        $categories = Category::all();
+        return view('employee.products.create', compact('categories'));
+    }
+
+    public function storeProduct(Request $request)
+    {
+        $request->validate([
+            'category_id' => 'required|exists:categories,id',
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric|min:0',
+            'stock_quantity' => 'required|integer|min:0',
+            'size' => 'nullable|string|max:255',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+        ]);
+
+        $imageUrls = [];
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                if ($image) {
+                    try {
+                        Configuration::instance()->cloud->cloudName = config('services.cloudinary.cloud_name');
+                        Configuration::instance()->cloud->apiKey = config('services.cloudinary.api_key');
+                        Configuration::instance()->cloud->apiSecret = config('services.cloudinary.api_secret');
+
+                        $uploadApi = new UploadApi();
+                        $uploadResult = $uploadApi->upload($image->getRealPath(), [
+                            'folder' => 'products'
+                        ]);
+                        $imageUrls[] = $uploadResult['secure_url'];
+                    } catch (\Exception $e) {
+                        \Log::error('Image upload failed: ' . $e->getMessage());
+                        return redirect()->back()->withErrors(['images' => 'One or more images failed to upload. Please try again.']);
+                    }
+                }
+            }
+        }
+
+        Product::create([
+            'category_id' => $request->category_id,
+            'name' => $request->name,
+            'slug' => Str::slug($request->name),
+            'description' => $request->description,
+            'price' => $request->price,
+            'stock_quantity' => $request->stock_quantity,
+            'size' => $request->size,
+            'images' => $imageUrls,
+        ]);
+
+        return redirect()->route('employee.products.index')->with('success', 'Product created successfully!');
+    }
+
+    public function editProduct(Product $product)
+    {
+        $categories = Category::all();
+        return view('employee.products.edit', compact('product', 'categories'));
+    }
+
+    public function updateProduct(Request $request, Product $product)
+    {
+        $request->validate([
+            'category_id' => 'required|exists:categories,id',
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric|min:0',
+            'stock_quantity' => 'required|integer|min:0',
+            'size' => 'nullable|string|max:255',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+        ]);
+
+        $imageUrls = $product->images ?? [];
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $index => $image) {
+                if ($image) {
+                    try {
+                        Configuration::instance()->cloud->cloudName = config('services.cloudinary.cloud_name');
+                        Configuration::instance()->cloud->apiKey = config('services.cloudinary.api_key');
+                        Configuration::instance()->cloud->apiSecret = config('services.cloudinary.api_secret');
+
+                        $uploadApi = new UploadApi();
+                        $uploadResult = $uploadApi->upload($image->getRealPath(), [
+                            'folder' => 'products'
+                        ]);
+                        $imageUrls[$index] = $uploadResult['secure_url'];
+                    } catch (\Exception $e) {
+                        \Log::error('Image upload failed: ' . $e->getMessage());
+                        return redirect()->back()->withErrors(['images' => 'One or more images failed to upload. Please try again.']);
+                    }
+                }
+            }
+        }
+        // Remove null values and reindex array
+        $imageUrls = array_values(array_filter($imageUrls));
+
+        $product->update([
+            'category_id' => $request->category_id,
+            'name' => $request->name,
+            'slug' => Str::slug($request->name),
+            'description' => $request->description,
+            'price' => $request->price,
+            'stock_quantity' => $request->stock_quantity,
+            'size' => $request->size,
+            'images' => $imageUrls,
+        ]);
+
+        return redirect()->route('employee.products.index')->with('success', 'Product updated successfully!');
+    }
+
+    public function deleteProduct(Product $product)
+    {
+        $product->delete();
+        return redirect()->route('employee.products.index')->with('success', 'Product deleted successfully!');
+    }
 }

@@ -25,6 +25,10 @@
                 <a href="{{ route('employee.all-orders') }}" class="btn btn-primary position-relative mb-3" style="width: 100%; font-weight: bold;">
                     <i class="bi bi-list-ul"></i> Quản lý tất cả đơn hàng
                 </a>
+
+                <a href="{{ route('employee.products.index') }}" class="btn btn-success position-relative mb-3" style="width: 100%; font-weight: bold;">
+                    <i class="bi bi-box-seam"></i> Quản lý sản phẩm
+                </a>
             </div>
 
             <!-- Category List -->
