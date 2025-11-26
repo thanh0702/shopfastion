@@ -108,7 +108,7 @@
         </div>
 
         <div class="col-md-4">
-            @if($order->receiptQrs->count() > 0)
+            @if($order->payment_method == 'transfer' && $order->receiptQrs->count() > 0)
             <div class="card">
                 <div class="card-header">
                     <h5 class="mb-0">Biên lai thanh toán</h5>
@@ -116,7 +116,7 @@
                 <div class="card-body">
                     @foreach($order->receiptQrs as $receipt)
                     <div class="mb-3">
-                        <img src="{{ asset('storage/' . $receipt->image) }}" alt="Receipt" class="img-fluid">
+                        <img src="{{ $receipt->image }}" alt="Receipt" class="img-fluid">
                     </div>
                     @endforeach
                 </div>
