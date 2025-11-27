@@ -81,6 +81,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/employee/products/{product}/edit', [EmployeeController::class, 'editProduct'])->name('employee.products.edit');
         Route::put('/employee/products/{product}', [EmployeeController::class, 'updateProduct'])->name('employee.products.update');
         Route::delete('/employee/products/{product}', [EmployeeController::class, 'deleteProduct'])->name('employee.products.delete');
+
+        // Employee Supplier Management
+        Route::get('/employee/suppliers', [EmployeeController::class, 'indexSuppliers'])->name('employee.suppliers.index');
+        Route::get('/employee/suppliers/create', [EmployeeController::class, 'createSupplier'])->name('employee.suppliers.create');
+        Route::post('/employee/suppliers', [EmployeeController::class, 'storeSupplier'])->name('employee.suppliers.store');
+        Route::get('/employee/suppliers/{supplier}/edit', [EmployeeController::class, 'editSupplier'])->name('employee.suppliers.edit');
+        Route::put('/employee/suppliers/{supplier}', [EmployeeController::class, 'updateSupplier'])->name('employee.suppliers.update');
+        Route::delete('/employee/suppliers/{supplier}', [EmployeeController::class, 'deleteSupplier'])->name('employee.suppliers.destroy');
     });
 });
 
